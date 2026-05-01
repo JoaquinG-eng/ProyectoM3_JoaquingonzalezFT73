@@ -1,0 +1,50 @@
+.theme-peach{
+
+  background:
+    linear-gradient(
+      135deg,
+      #ec4899,
+      #f472b6,
+      #fbcfe8
+    );
+
+}
+.theme-peach .messages{
+box-shadow:
+0 0 25px rgba(255,182,193,.3);
+}
+.theme-naruto{
+
+  background:
+    linear-gradient(
+      135deg,
+      #ea580c,
+      #f97316,
+      #fb923c
+    );
+}
+.theme-rosalina{
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e3a8a,
+#38bdf8
+);
+}
+.theme-rosalina .messages{
+box-shadow:
+0 0 30px rgba(56,189,248,.3);
+}
+
+.theme-mario{
+
+  background:
+    linear-gradient(
+      135deg,
+      #b91c1c,
+      #dc2626,
+      #f87171
+    );
+
+}
