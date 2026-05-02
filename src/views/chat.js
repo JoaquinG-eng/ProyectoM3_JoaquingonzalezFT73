@@ -1,6 +1,9 @@
 let currentCharacter = "Mario";
 
-const conversations = {};
+const conversations =
+  JSON.parse(
+    localStorage.getItem("conversations")
+  ) || {};
 
 export function renderChat() {
   return `
@@ -56,18 +59,31 @@ export function renderChat() {
       class="chat-form"
     >
 
-      <input
-        id="chat-input"
-        class="chat-input"
-        type="text"
-        placeholder="Escribe un mensaje..."
-      >
+<form
+  id="chat-form"
+  class="chat-form"
+>
 
-      <button type="submit">
-        Enviar
-      </button>
+  <input
+    id="chat-input"
+    class="chat-input"
+    type="text"
+    placeholder="Escribe un mensaje..."
+  >
 
-    </form>
+  <button type="submit">
+    Enviar
+  </button>
+
+  <button
+    type="button"
+    id="clear-chat"
+    class="clear-btn"
+  >
+    Limpiar
+  </button>
+
+</form>
 
   </section>
   `;
@@ -77,6 +93,7 @@ export function initChat() {
 
   initCharacters();
   loadConversation();
+  initClearButton();
 
   const form = document.getElementById("chat-form");
   const input = document.getElementById("chat-input");
@@ -144,6 +161,25 @@ function initCharacters() {
   });
 
 }
+function initClearButton() {
+
+  const button =
+    document.getElementById("clear-chat");
+
+  button.addEventListener("click", () => {
+
+    conversations[currentCharacter] = [];
+
+    localStorage.setItem(
+      "conversations",
+      JSON.stringify(conversations)
+    );
+
+    loadConversation();
+
+  });
+
+}
 
 function addMessage(
   text,
@@ -179,7 +215,10 @@ function addMessage(
       text,
       sender
     });
-
+localStorage.setItem(
+  "conversations",
+  JSON.stringify(conversations)
+);
   }
 
 }
