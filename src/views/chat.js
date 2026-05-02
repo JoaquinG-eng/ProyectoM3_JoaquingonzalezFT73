@@ -196,7 +196,27 @@ function addMessage(
   div.className =
     `message ${sender}`;
 
-  div.textContent = text;
+  const avatars = {
+    Mario: "🍄",
+    Peach: "🍑",
+    Naruto: "🍥",
+    Rosalina: "🌌"
+  };
+
+  const avatar =
+    sender === "ai"
+      ? avatars[currentCharacter]
+      : "🧑";
+
+  div.innerHTML = `
+    <span class="avatar">
+      ${avatar}
+    </span>
+
+    <span class="message-text">
+      ${text}
+    </span>
+  `;
 
   container.appendChild(div);
 
@@ -205,20 +225,21 @@ function addMessage(
 
   if (save) {
 
-    if (!conversations[currentCharacter]) {
-
-      conversations[currentCharacter] = [];
-
-    }
-
-    conversations[currentCharacter].push({
+if (!conversations[currentCharacter]) {
+      
+conversations[currentCharacter] = [];
+    
+}
+conversations[currentCharacter].push({
       text,
       sender
     });
-localStorage.setItem(
-  "conversations",
-  JSON.stringify(conversations)
-);
+
+    localStorage.setItem(
+      "conversations",
+      JSON.stringify(conversations)
+    );
+
   }
 
 }
