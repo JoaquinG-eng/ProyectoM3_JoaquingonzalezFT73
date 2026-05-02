@@ -43,7 +43,7 @@ Comenzar Chat
 
 <h3>🍥 Naruto</h3>
 
-<p> El ninja hiperactivo de Konoha.</p>
+<p> El ninja prodijio de la aldea de la hoja.</p>
 </div>
 
 <div class="home-character">
