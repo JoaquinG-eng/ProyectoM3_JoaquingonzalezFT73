@@ -1,14 +1,23 @@
-import { renderCharacters } from "../components/characterButtons.js";
-import { renderMessages } from "../components/messagesContainer.js";
-import { renderChatForm } from "../components/chatForm.js";
+import { characters } from "../data/characters.js";
+
+import { renderCharacters} from "../components/characterButtons.js";
+
+import { renderMessages} from "../components/messagesContainer.js";
+
+import { renderChatForm} from "../components/chatForm.js";
 
 let currentCharacter = "Mario";
 
-const conversations =
-  JSON.parse(localStorage.getItem("conversations")) || {};
+const conversations = JSON.parse(localStorage.getItem("conversations")) || {};
 
-export function renderChat() {
-  return `
+function getCurrentCharacter(){
+
+  return characters.find(char => char.name === currentCharacter);
+
+}
+
+export function renderChat(){
+return `
   <section class="chat-page">
 
     <h2 class="chat-title">
@@ -21,59 +30,102 @@ export function renderChat() {
 
   </section>
   `;
+
 }
 
-export function initChat() {
-initCharacters();
-loadConversation();
-initClearButton();
-initContrastButton();
+export function initChat(){
 
-  const form = document.getElementById("chat-form");
-  const input = document.getElementById("chat-input");
+  initCharacters();
+  loadConversation();
+  initClearButton();
+  initContrastButton();
 
-form.addEventListener("submit", (e) => {
-e.preventDefault();
-const text = input.value.trim();
-if (!text) return;
+  const form =
+    document.getElementById("chat-form");
 
-addMessage(text, "user");
-input.value = "";
+  const input =
+    document.getElementById("chat-input");
+
+  form.addEventListener("submit", e => {
+
+    e.preventDefault();
+
+    const text =
+      input.value.trim();
+
+    if(!text) return; addMessage(text, "user");
+
+    input.value = "";
+
     addTyping();
 
-setTimeout(() => {
+    setTimeout(() => {
+
       removeTyping();
-      addMessage(getCharacterResponse(text), "ai");
+
+      addMessage( getCharacterResponse(text),
+        "ai"
+      );
+
     }, 1200);
-});
 
-input.addEventListener("keydown", (e) => {
-if (e.key === "Enter") {
-e.preventDefault();
-form.requestSubmit();
-}
-});
-}
+  });
 
-function initCharacters() {
-document.querySelectorAll(".character-btn").forEach(btn => {
-btn.addEventListener("click", () => {
-currentCharacter = btn.dataset.character;
-document.body.className = btn.dataset.theme;
-loadConversation();
-});
-});
+  input.addEventListener("keydown", e => { 
+
+    if(e.key === "Enter"){ e.preventDefault(); form.requestSubmit();
+
+    }
+
+  });
+
 }
 
-function initClearButton() {
-const btn = document.getElementById("clear-chat");
+function initCharacters(){
 
-btn.addEventListener("click", () => {
-conversations[currentCharacter] = [];
-localStorage.setItem("conversations", JSON.stringify(conversations));
-loadConversation();
-});
+  document
+    .querySelectorAll(".character-btn")
+    .forEach(btn => {
+
+      btn.addEventListener("click", () => {
+
+        currentCharacter =
+          btn.dataset.character;
+
+        const character =
+          getCurrentCharacter();
+
+        document.body.className =
+          character.theme;
+
+        loadConversation();
+
+      });
+
+    });
+
 }
+
+function initClearButton(){
+
+  const btn =
+    document.getElementById("clear-chat");
+
+  btn.addEventListener("click", () => {
+
+    conversations[currentCharacter] = [];
+
+    localStorage.setItem(
+      "conversations",
+      JSON.stringify(conversations)
+    );
+
+    loadConversation();
+
+  });
+
+}
+
 function initContrastButton(){
 
   const button =
@@ -82,8 +134,8 @@ function initContrastButton(){
   const savedContrast =
     localStorage.getItem("highContrast");
 
-  if(savedContrast === "true"){
-    document.body.classList.add("high-contrast");
+  if(savedContrast === "true"){ document.body.classList.add( "high-contrast");
+
   }
 
   button.addEventListener("click", () => {
@@ -106,72 +158,125 @@ function initContrastButton(){
 
 }
 
-function addMessage(text, sender, save = true) {
-  const container = document.getElementById("messages");
+function addMessage(
+  text,
+  sender,
+  save = true
+){
 
-  const avatars = {
-    Mario: "🍄",
-    Peach: "🍑",
-    Naruto: "🍥",
-    Rosalina: "🌌"
-  };
+  const container =
+    document.getElementById("messages");
 
-  const div = document.createElement("div");
-  div.className = `message ${sender}`;
+  const character =
+    getCurrentCharacter();
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    `message ${sender}`;
 
   div.innerHTML = `
     <span class="avatar">
-      ${sender === "ai" ? avatars[currentCharacter] : "🧑"}
+      ${
+        sender === "ai"
+          ? character.avatar
+          : "🧑"
+      }
     </span>
-    <span class="message-text">${text}</span>
+
+    <span class="message-text"> ${text} </span>
   `;
 
   container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
 
-if (save) {
-if (!conversations[currentCharacter]) {
-  conversations[currentCharacter] = [];
-}
+  container.scrollTop =
+    container.scrollHeight;
 
-    conversations[currentCharacter].push({ text, sender });
+  if(save){
+
+    if(!conversations[currentCharacter]){
+
+      conversations[currentCharacter] = [];
+
+    }
+
+    conversations[currentCharacter].push({
+      text,
+      sender
+    });
 
     localStorage.setItem(
       "conversations",
       JSON.stringify(conversations)
-);
-}
+    );
+
+  }
+
 }
 
-function loadConversation() {
-  const container = document.getElementById("messages");
+function loadConversation(){
+
+  const container =
+    document.getElementById("messages");
+
   container.innerHTML = "";
 
-  (conversations[currentCharacter] || []).forEach(msg => {
-    addMessage(msg.text, msg.sender, false);
-});
+  (
+    conversations[currentCharacter] || []
+  ).forEach(msg => {
+
+    addMessage(
+      msg.text,
+      msg.sender,
+      false
+    );
+
+  });
+
 }
 
-function addTyping() {
-  const container = document.getElementById("messages");
+function addTyping(){
 
-  const div = document.createElement("div");
+  const container =
+    document.getElementById("messages");
+
+  const div =
+    document.createElement("div");
+
   div.id = "typing";
-  div.className = "message ai typing";
-  div.textContent = "Escribiendo...";
 
-container.appendChild(div);
+  div.className =
+    "message ai typing";
+
+  div.textContent =
+    "Escribiendo...";
+
+  container.appendChild(div);
+
 }
 
-function removeTyping() {
-  const typing = document.getElementById("typing");
-  if (typing) typing.remove();
+function removeTyping(){
+
+  const typing =
+    document.getElementById("typing");
+
+  if(typing){
+
+    typing.remove();
+
+  }
+
 }
 
-function getCharacterResponse(text) {
-  if (currentCharacter === "Peach") return `¡Hola! 🍑 ${text}`;
-  if (currentCharacter === "Naruto") return `¡Dattebayo! 🍥 ${text}`;
-  if (currentCharacter === "Rosalina") return `✨ ${text}`;
-  if (currentCharacter === "Mario") return `¡It's-a me! 🍄 ${text}`;
-return text;
+function getCharacterResponse(text){
+
+  const character =
+    getCurrentCharacter();
+
+  return `
+    ${character.response}
+    ${text}
+  `;
+
 }

@@ -1,23 +1,25 @@
-export function renderCharacters() {
+import { characters } from "../data/characters.js";
+
+export function renderCharacters(){
+
   return `
-  <div class="characters">
+    <div class="characters">
 
-    <button class="character-btn" data-character="Peach" data-theme="theme-peach">
-      Princesa Peach
-    </button>
+      ${characters.map(character => `
 
-    <button class="character-btn" data-character="Naruto" data-theme="theme-naruto">
-      Naruto
-    </button>
+        <button
+          class="character-btn"
+          data-character="${character.name}"
+        >
 
-    <button class="character-btn" data-character="Rosalina" data-theme="theme-rosalina">
-      Rosalina
-    </button>
+          ${character.avatar}
+          ${character.name}
 
-    <button class="character-btn" data-character="Mario" data-theme="theme-mario">
-      Mario Bros
-    </button>
+        </button>
 
-  </div>
+      `).join("")}
+
+    </div>
   `;
+
 }
