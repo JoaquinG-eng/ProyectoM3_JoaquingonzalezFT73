@@ -1,10 +1,10 @@
-import { chatState } from "../state/chatState.js";
-import { characters } from "../data/characters.js";
+import { chatState } from "../state/chatState.js"; 
+import { characters } from "../data/characters.js"; 
 
-export function setCharacter(characterId) {
+export function setCharacter(characterId) { 
   const character = characters.find((c) => c.id === characterId);
 
-  if (!character) return;
+  if (!character) return; 
 
   chatState.currentCharacter = character;
   chatState.messages = [];

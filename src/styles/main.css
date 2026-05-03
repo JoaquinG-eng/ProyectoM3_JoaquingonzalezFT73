@@ -1,425 +1,51 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
 body{
-margin:0;
-font-family:Arial, Helvetica, sans-serif;
-color:white;
-min-height:100vh;
-background:#0f172a;
-transition:
-    background 0.8s ease,
-    background-color 0.8s ease,
-    color 0.4s ease;
-}
-.navbar{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  padding:20px;
-  background:rgba(0,0,0,.3);
-  backdrop-filter:blur(10px);
-}
-.navbar a{
+  font-family:Arial, Helvetica, sans-serif;
   color:white;
-  text-decoration:none;
-  font-weight:bold;
-}
-.chat-page{
-  width:90%;
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
-.chat-title{
-  text-align:center;
-  margin-bottom:20px;
-}
-.characters{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-bottom:20px;
-}
-.character-btn{
-  border:none;
-  padding:12px 18px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:bold;
-  transition:.3s;
-}
-.character-btn:hover{
-  transform:scale(1.05);
-}
-.messages{
-  height:400px;
-  overflow-y:auto;
-  background:rgba(255,255,255,.08);
-  border-radius:20px;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
-.message{
-  max-width:75%;
-  padding:14px 18px;
-  border-radius:18px;
-  line-height:1.4;
-  animation:fade .3s ease;
-}
-.user{
-  align-self:flex-end;
-  background:#2563eb;
-}
-.ai{
-  align-self:flex-start;
-  background:#374151;
-}
-.typing{
-  opacity:.7;
-  font-style:italic;
-}
-.chat-form{
-  display:flex;
-  gap:10px;
-  margin-top:20px;
-}
-.chat-input{
-  flex:1;
-  padding:14px;
-  border:none;
-  border-radius:14px;
-  outline:none;
-}
-.chat-form button{
-  border:none;
-  padding:14px 20px;
-  border-radius:14px;
-  cursor:pointer;
-  font-weight:bold;
-}
-@keyframes fade{
-
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-}
-@media (max-width:768px){
-
-  .messages{
-    height:60vh;
-  }
-.message{
-    max-width:90%;
-  }
-
-}
-.character-btn{
-
-  border:none;
-
-  padding:12px 18px;
-
-  border-radius:12px;
-
-  cursor:pointer;
-
-  font-weight:bold;
-
+  min-height:100vh;
+  background:#0f172a;
   transition:
-    transform .3s ease,
-    box-shadow .3s ease,
-    background .5s ease;
-
+    background .8s ease,
+    background-color .8s ease,
+    color .4s ease;
 }
-.character-btn:hover{
 
-  transform:scale(1.08);
-
-  box-shadow:
-    0 0 15px rgba(255,255,255,.4);
-
+a{
+text-decoration:none;
+color:white;
 }
-.home-page{
-
-  width:90%;
-
-  max-width:1200px;
-
-  margin:auto;
-
-  padding:40px 20px;
-
+body.high-contrast{
+  background:#000 !important;
+  color:#fff;
 }
-.hero-card{
 
-  text-align:center;
-
-  padding:60px 30px;
-
-  border-radius:30px;
-
-  background:
-    rgba(255,255,255,.08);
-
-  backdrop-filter:blur(14px);
-
-  box-shadow:
-    0 0 30px rgba(0,0,0,.2);
-
-  animation:
-    fadeHero 1s ease;
-
+body.high-contrast .messages{
+  background:#111;
+  border:2px solid white;
 }
-.hero-title{
 
-  font-size:4rem;
-
-  margin-bottom:20px;
-
-  letter-spacing:2px;
-
+body.high-contrast .message{
+  border:2px solid white;
 }
-.hero-text{
 
-  font-size:1.2rem;
-
-  opacity:.9;
-
-  max-width:700px;
-
-  margin:auto;
-
-  line-height:1.7;
-
+body.high-contrast .character-btn{
+  border:2px solid white;
 }
-.start-btn{
 
-  display:inline-block;
-
-  margin-top:30px;
-
-  padding:16px 30px;
-
-  border-radius:16px;
-
-  text-decoration:none;
-
+body.high-contrast .chat-input{
+  background:#000;
   color:white;
-
-  font-weight:bold;
-
-  font-size:1.1rem;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #60a5fa
-    );
-
-  transition:.3s;
-
+  border:2px solid white;
 }
 
-.start-btn:hover{
-
-  transform:translateY(-3px);
-
-  box-shadow:
-    0 0 20px rgba(96,165,250,.6);
-
-}
-.home-characters{
-margin-top:50px;
-display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-
-}
-
-.home-character{
-padding:25px;
-border-radius:20px;
-background:
-    rgba(255,255,255,.08);
-backdrop-filter:blur(12px);
-transition:.3s;
-
-}
-
-.home-character:hover{
-
-  transform:
-    translateY(-5px);
-
-  background:
-    rgba(255,255,255,.12);
-
-}
-
-.home-character h3{
-
-  margin-bottom:10px;
-
-}
-
-@keyframes fadeHero{
-
-  from{
-
-    opacity:0;
-
-    transform:
-      translateY(30px);
-
-    }
-to{
-
-  pacity:1;
-transform:
-
-translateY(0);
-
-}
-}
-
-@media(max-width:768px){
-
-  .hero-title{
-
-    font-size:2.5rem;
-
-  }
-
-  .hero-text{
-font-size:1rem;
-}
-}
-.about-page{
-  width:90%;
-  max-width:1000px;
-  margin:auto;
-  padding:40px 20px;
-}
-
-.about-card{
-  background:rgba(255,255,255,.08);
-  backdrop-filter:blur(14px);
-  border-radius:30px;
-  padding:40px;
-  text-align:center;
-  box-shadow:0 0 30px rgba(0,0,0,.2);
-}
-
-.about-title{
-  font-size:3rem;
-  margin-bottom:20px;
-}
-
-.about-text{
-  line-height:1.8;
-  font-size:1.1rem;
-  opacity:.9;
-  margin-bottom:20px;
-}
-
-.about-tech{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  flex-wrap:wrap;
-  margin-top:30px;
-}
-
-.about-tech span{
-  padding:12px 18px;
-  border-radius:14px;
-  background:rgba(255,255,255,.12);
-  font-weight:bold;
-}
-
-.about-characters{
-  margin-top:40px;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:20px;
-}
-
-.about-character{
-  background:rgba(255,255,255,.08);
-  padding:25px;
-  border-radius:20px;
-  text-align:center;
-  font-size:1.2rem;
-  font-weight:bold;
-  transition:.3s;
-}
-
-.about-character:hover{
-  transform:translateY(-5px);
-  background:rgba(0, 0, 0, 0.14);
-}
-.clear-btn{
-  border:none;
-  padding:14px 18px;
-  border-radius:144px;
-  cursor:pointer;
-  font-weight:bold;
-  background:#000000;
-  color:white;
-  transition:.3s;
-}
-
-.clear-btn:hover{
-  background:#d6cdcd;
-  transform:scale(1.05);
-}
-.message{
-  display:flex;
-  align-items:flex-start;
-  gap:12px;
-  padding:14px 16px;
-  margin-bottom:12px;
-  border-radius:18px;
-  line-height:1.5;
-  animation:messageAnimation .3s ease;
-}
-
-.message.user{
-  background:rgba(255,255,255,.12);
-}
-
-.message.ai{
-  background:rgba(0,0,0,.18);
-}
-
-.avatar{
-  font-size:1.4rem;
-}
-
-.message-text{
-  flex:1;
-}
-
-@keyframes messageAnimation{
-
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-
+body.high-contrast .about-card,
+body.high-contrast .hero-card,
+body.high-contrast .about-character{
+  background:#111;
+  border:2px solid white;
 }

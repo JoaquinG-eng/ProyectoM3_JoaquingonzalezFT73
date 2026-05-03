@@ -1,5 +1,5 @@
-export function renderMessages() {
+export function renderMessages() { 
   return `
-  <div id="messages" class="messages"></div>
+  <div id="messages" class="messages"></div> 
   `;
 }

@@ -1,6 +1,9 @@
 export function renderChatForm() {
   return `
-  <form id="chat-form" class="chat-form">
+  <form
+    id="chat-form"
+    class="chat-form"
+  >
 
     <input
       id="chat-input"
@@ -13,8 +16,20 @@ export function renderChatForm() {
       Enviar
     </button>
 
-    <button type="button" id="clear-chat" class="clear-btn">
+    <button
+      type="button"
+      id="clear-chat"
+      class="clear-btn"
+    >
       Limpiar
+    </button>
+
+    <button
+      type="button"
+      id="contrast-btn"
+      class="contrast-btn"
+    >
+      Contraste
     </button>
 
   </form>

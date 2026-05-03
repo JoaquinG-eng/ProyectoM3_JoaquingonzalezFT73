@@ -27,6 +27,7 @@ export function initChat() {
 initCharacters();
 loadConversation();
 initClearButton();
+initContrastButton();
 
   const form = document.getElementById("chat-form");
   const input = document.getElementById("chat-input");
@@ -72,6 +73,37 @@ conversations[currentCharacter] = [];
 localStorage.setItem("conversations", JSON.stringify(conversations));
 loadConversation();
 });
+}
+function initContrastButton(){
+
+  const button =
+    document.getElementById("contrast-btn");
+
+  const savedContrast =
+    localStorage.getItem("highContrast");
+
+  if(savedContrast === "true"){
+    document.body.classList.add("high-contrast");
+  }
+
+  button.addEventListener("click", () => {
+
+    document.body.classList.toggle(
+      "high-contrast"
+    );
+
+    const enabled =
+      document.body.classList.contains(
+        "high-contrast"
+      );
+
+    localStorage.setItem(
+      "highContrast",
+      enabled
+    );
+
+  });
+
 }
 
 function addMessage(text, sender, save = true) {
