@@ -32,6 +32,7 @@ export function renderChatForm() {
       Contraste
     </button>
 
+
   </form>
   `;
 }

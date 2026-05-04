@@ -1,4 +1,4 @@
-import {renderCharacters} from "../components/characterButtons.js";
+import {renderCharacters} from "../components/characterCards.js";
 import {renderMessages} from "../components/messagesContainer.js";
 import {renderChatForm} from "../components/chatForm.js";
 
@@ -18,7 +18,7 @@ export function renderChat(){
   <section class="chat-page">
 
     <h2 class="chat-title">
-      Chat con personajes IA
+      Elige tu personaje y chatea con él/ella
     </h2>
 
     ${renderCharacters()}
