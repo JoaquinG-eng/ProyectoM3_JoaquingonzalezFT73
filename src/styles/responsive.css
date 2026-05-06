@@ -1,19 +1,39 @@
-@media(max-width:768px){  
+@media(max-width:820px){
 
-.messages{
-height:60vh;
-}
-
-.message{
-max-width:90%;
+.chat-page{
+width:95%;
 }
 
 .hero-title{
-font-size:2.5rem;
+font-size:3rem;
 }
 
-.hero-text{
-font-size:1rem;
+}
+
+@media(max-width:480px){
+
+.navbar{
+flex-wrap:wrap;
+}
+
+.chat-form{
+flex-direction:column;
+}
+
+.chat-form button{
+width:100%;
+}
+
+.messages{
+height:55vh;
+}
+
+.character-btn{
+width:100%;
+}
+
+.hero-title{
+font-size:2.2rem;
 }
 
 }

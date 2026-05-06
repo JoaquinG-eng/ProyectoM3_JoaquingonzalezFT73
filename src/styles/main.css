@@ -5,6 +5,7 @@
 @import "./themes.css";
 @import "./accessibility.css";
 @import "./responsive.css";
+@import "./notFound.css";
 
 *{
 margin:0;
