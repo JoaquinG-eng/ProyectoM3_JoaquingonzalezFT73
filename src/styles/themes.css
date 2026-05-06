@@ -1,50 +1,77 @@
 .theme-mario{
-  background:linear-gradient(135deg,#1e3a8a,#0f172a);
+background:
+linear-gradient(
+135deg,
+#1e3a8a,
+#0f172a
+);
 }
 
 .theme-mario .messages{
-  border-left:4px solid #60a5fa;
-  box-shadow:0 0 18px rgba(96,165,250,.25);
+border-left:
+4px solid #60a5fa;
+
+box-shadow:
+0 0 18px rgba(96,165,250,.25);
 }
 
 .theme-naruto{
-  background:linear-gradient(135deg,#111827,#f97316);
+background:
+linear-gradient(
+135deg,
+#111827,
+#f97316
+);
 }
 
 .theme-naruto .messages{
-  border-left:4px solid #f97316;
-  box-shadow:0 0 18px rgba(249,115,22,.25);
+border-left:
+4px solid #f97316;
+
+box-shadow:
+0 0 18px rgba(249,115,22,.25);
 }
 
 .theme-peach{
-  background:linear-gradient(135deg,#111827,#f472b6);
+background:
+linear-gradient(
+135deg,
+#111827,
+#f472b6
+);
 }
 
 .theme-peach .messages{
-  border-left:4px solid #f472b6;
-  box-shadow:0 0 18px rgba(244,114,182,.25);
+border-left:
+4px solid #f472b6;
+
+box-shadow:
+0 0 18px rgba(244,114,182,.25);
 }
 
 .theme-rosalina{
-  background:linear-gradient(135deg,#0f172a,#38bdf8);
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#38bdf8
+);
 }
 
 .theme-rosalina .messages{
-  border-left:4px solid #38bdf8;
-  box-shadow:0 0 18px rgba(56,189,248,.25);
+border-left:
+4px solid #38bdf8;
+
+box-shadow:
+0 0 18px rgba(56,189,248,.25);
 }
+
 .message.ai{
-  border-left:3px solid rgba(255,255,255,.3);
+border-left:
+3px solid rgba(255,255,255,.3);
 }
 
 .message.user{
-  border-left:3px solid rgba(255,255,255,.15);
-}
-body.accessible-mode .messages{
-  font-size:1.1rem;
-  letter-spacing:.5px;
-}
-
-body.accessible-mode .character-btn{
-  border:2px solid white;
+border-left:
+3px solid rgba(255,255,255,.15);
 }

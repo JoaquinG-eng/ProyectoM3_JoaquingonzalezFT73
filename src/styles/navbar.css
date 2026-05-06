@@ -1,12 +1,27 @@
 .navbar{
 display:flex;
 justify-content:center;
+align-items:center;
 gap:20px;
+
 padding:20px;
-background:rgba(0,0,0,.3);
+
+background:
+rgba(0,0,0,.3);
+
 backdrop-filter:blur(10px);
 }
 
 .navbar a{
 font-weight:bold;
+
+transition:
+opacity .3s ease,
+transform .3s ease;
+}
+
+.navbar a:hover{
+opacity:.8;
+
+transform:translateY(-2px);
 }

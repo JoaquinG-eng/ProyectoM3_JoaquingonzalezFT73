@@ -103,31 +103,49 @@ initContrastButton();
 
 function initCharacters(){
 
-  document
-    .querySelectorAll(".character-btn")
-    .forEach(btn => {
+document
+.querySelectorAll(".character-btn")
+.forEach(btn => {
 
-      btn.addEventListener("click",() => {
+btn.addEventListener("click",() => {
 
-        currentCharacter =
-          btn.dataset.character;
+document
+.querySelectorAll(".character-btn")
+.forEach(button => {
 
-        const character =
-          getCurrentCharacter(
-            currentCharacter
-          );
+button.classList.remove("active");
 
-        document.body.className =
-          character.theme;
+});
 
-        loadConversation(
-          currentCharacter,
-          conversations
-        );
+btn.classList.add("active");
 
-      });
+currentCharacter =
+btn.dataset.character;
 
-    });
+const character =
+getCurrentCharacter(
+currentCharacter
+);
+
+document.body.classList.remove(
+"theme-mario",
+"theme-naruto",
+"theme-peach",
+"theme-rosalina"
+);
+
+document.body.classList.add(
+character.theme
+);
+
+loadConversation(
+currentCharacter,
+conversations
+);
+
+});
+
+});
 
 }
 

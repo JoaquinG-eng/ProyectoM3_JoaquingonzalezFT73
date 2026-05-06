@@ -1,51 +1,34 @@
+@import "./navbar.css";
+@import "./chat.css";
+@import "./home.css";
+@import "./about.css";
+@import "./themes.css";
+@import "./accessibility.css";
+@import "./responsive.css";
+
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-  font-family:Arial, Helvetica, sans-serif;
-  color:white;
-  min-height:100vh;
-  background:#0f172a;
-  transition:
-    background .8s ease,
-    background-color .8s ease,
-    color .4s ease;
+min-height:100vh;
+font-family:Arial,Helvetica,sans-serif;
+color:white;
+background:#0f172a;
+
+transition:
+background .8s ease,
+background-color .8s ease,
+color .4s ease;
 }
 
 a{
-text-decoration:none;
 color:white;
-}
-body.high-contrast{
-  background:#000 !important;
-  color:#fff;
+text-decoration:none;
 }
 
-body.high-contrast .messages{
-  background:#111;
-  border:2px solid white;
-}
-
-body.high-contrast .message{
-  border:2px solid white;
-}
-
-body.high-contrast .character-btn{
-  border:2px solid white;
-}
-
-body.high-contrast .chat-input{
-  background:#000;
-  color:white;
-  border:2px solid white;
-}
-
-body.high-contrast .about-card,
-body.high-contrast .hero-card,
-body.high-contrast .about-character{
-  background:#111;
-  border:2px solid white;
+button{
+font-family:inherit;
 }
