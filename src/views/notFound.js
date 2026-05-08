@@ -9,7 +9,8 @@ return `
 Página no encontrada
 </p>
 
-<a href="#/home">
+<a href="/home">
+Presione Aqui para
 Volver al inicio
 </a>
 

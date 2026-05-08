@@ -1,4 +1,9 @@
 export const chatState = {
   selectedCharacter: null,
-  messages: [],
+  messages: []
 };
+
+export function setCharacter(character) {
+  chatState.selectedCharacter = character;
+  chatState.messages = [];
+}

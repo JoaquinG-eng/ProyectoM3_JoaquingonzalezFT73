@@ -19,7 +19,7 @@ inteligencia artificial.
 </p>
 
 <a
-href="#/chat"
+href="/chat"
 class="start-btn"
 >
 

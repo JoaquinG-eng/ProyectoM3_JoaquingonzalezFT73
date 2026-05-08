@@ -1,169 +1,107 @@
-import {renderCharacters} from "../components/characterCards.js";
-import {renderMessages} from "../components/messagesContainer.js";
-import {renderChatForm} from "../components/chatForm.js";
+import { getAIResponse } from "../services/chatService.js";
+import { addMessage, getMessages, clearMessages } from "../state/chatState.js";
 
-import {getConversations,saveConversations} from "../utils/storage.js";
-import {addTyping,removeTyping} from "../utils/typing.js";
-import {addMessage,loadConversation} from "../utils/messages.js";
-import {getCurrentCharacter} from "../utils/character.js";
-import {initContrastButton} from "../utils/contrast.js";
+export function renderChat() {
 
-let currentCharacter = "Mario";
-
-const conversations = getConversations();
-
-export function renderChat(){
+  const messages = getMessages();
 
   return `
-  <section class="chat-page">
+    <section class="chat-page">
 
-    <h2 class="chat-title">
-      Elige tu personaje y chatea con él/ella
-    </h2>
+      <header class="chat-header">
 
-    ${renderCharacters()}
-    ${renderMessages()}
-    ${renderChatForm()}
+        <a href="/home" data-link class="nav-btn">Home</a>
+        <a href="/chat" data-link class="nav-btn">Chat</a>
+        <a href="/about" data-link class="nav-btn">About</a>
 
-  </section>
+      </header>
+
+      <div id="messages" class="messages">
+
+        ${messages.map(m => `
+          <div class="message ${m.role}">
+            ${m.text}
+          </div>
+        `).join("")}
+
+      </div>
+
+      <form id="chat-form" class="chat-form">
+
+        <input
+          id="chat-input"
+          placeholder="Escribe un mensaje..."
+          autocomplete="off"
+        />
+
+        <button type="submit">Enviar</button>
+
+        <button type="button" id="clear-chat">
+          Limpiar
+        </button>
+
+      </form>
+
+    </section>
   `;
-
 }
 
-export function initChat(){
+export function initChat() {
 
-initCharacters();
-initClearButton();
-initContrastButton();
+  const form = document.getElementById("chat-form");
+  const input = document.getElementById("chat-input");
+  const messages = document.getElementById("messages");
+  const clearBtn = document.getElementById("clear-chat");
 
-  loadConversation(
-    currentCharacter,
-    conversations
-  );
+  if (!form || !input || !messages) return;
 
-  const form =
-    document.getElementById("chat-form");
-
-  const input =
-    document.getElementById("chat-input");
-
-  form.addEventListener("submit",e => {
+  // ENVIAR MENSAJE
+  form.addEventListener("submit", async (e) => {
 
     e.preventDefault();
 
-    const text =
-      input.value.trim();
+    const text = input.value.trim();
+    if (!text) return;
 
-    if(!text) return;
-
-    addMessage(
-      text,
-      "user",
-      currentCharacter,
-      conversations
-    );
+    addMessage({ role: "user", text });
 
     input.value = "";
 
-    addTyping();
+    messages.innerHTML = renderMessages();
+    scrollBottom(messages);
 
-    setTimeout(() => {
+    const reply = await getAIResponse(text);
 
-      removeTyping();
+    addMessage({ role: "ai", text: reply });
 
-      const character =
-        getCurrentCharacter(
-          currentCharacter
-        );
-
-      addMessage(
-        `${character.response} ${text}`,
-        "ai",
-        currentCharacter,
-        conversations
-      );
-
-    },1200);
-
+    messages.innerHTML = renderMessages();
+    scrollBottom(messages);
   });
 
-  input.addEventListener("keydown",e => {
+  // LIMPIAR CHAT
+  if (clearBtn) {
 
-    if(e.key === "Enter"){
+    clearBtn.addEventListener("click", () => {
 
-      e.preventDefault();
+      clearMessages();
 
-      form.requestSubmit();
-
-    }
-
-  });
-
+      messages.innerHTML = "";
+    });
+  }
 }
 
-function initCharacters(){
+// helpers internos
+function renderMessages() {
 
-document
-.querySelectorAll(".character-btn")
-.forEach(btn => {
-
-btn.addEventListener("click",() => {
-
-document
-.querySelectorAll(".character-btn")
-.forEach(button => {
-
-button.classList.remove("active");
-
-});
-
-btn.classList.add("active");
-
-currentCharacter =
-btn.dataset.character;
-
-const character =
-getCurrentCharacter(
-currentCharacter
-);
-
-document.body.classList.remove(
-"theme-mario",
-"theme-naruto",
-"theme-peach",
-"theme-rosalina"
-);
-
-document.body.classList.add(
-character.theme
-);
-
-loadConversation(
-currentCharacter,
-conversations
-);
-
-});
-
-});
-
+  return getMessages()
+    .map(m => `
+      <div class="message ${m.role}">
+        ${m.text}
+      </div>
+    `)
+    .join("");
 }
 
-function initClearButton(){
-
-  const btn =
-    document.getElementById("clear-chat");
-
-  btn.addEventListener("click",() => {
-
-    conversations[currentCharacter] = [];
-
-    saveConversations(conversations);
-
-    loadConversation(
-      currentCharacter,
-      conversations
-    );
-
-});
+function scrollBottom(el) {
+  el.scrollTop = el.scrollHeight;
 }

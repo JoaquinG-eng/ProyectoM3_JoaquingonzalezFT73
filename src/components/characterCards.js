@@ -1,5 +1,4 @@
-import {characters}
-from "../data/characters.js";
+import {characters}from "../data/characters.js";
 
 export function renderCharacters(){
 

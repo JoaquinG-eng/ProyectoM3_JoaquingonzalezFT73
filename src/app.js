@@ -1,22 +1,23 @@
 import { router } from "./router.js";
 
-function startApp() {
-if (!window.location.hash) {
-window.location.hash = "#/home";
+function initApp() {
+
+  router();
+
+  document.addEventListener("click", (e) => {
+
+    const link = e.target.closest("[data-link]");
+    if (!link) return;
+
+    e.preventDefault();
+
+    history.pushState({}, "", link.getAttribute("href"));
+
+    router();
+
+  });
+
 }
 
-document.body.classList.add(
-"theme-mario"
-);
-
-router();
-}
-window.addEventListener(
-"load",
-startApp
-);
-window.addEventListener(
-"hashchange",
-router
-);
-    
+window.addEventListener("load", initApp);
+window.addEventListener("popstate", router);

@@ -1,67 +1,32 @@
-import {renderHome} from "./views/home.js";
+import { renderHome } from "./views/home.js";
+import { renderChat, initChat } from "./views/chat.js";
+import { renderAbout } from "./views/about.js";
+import { renderNotFound } from "./views/notFound.js";
 
-import {renderChat, initChat} from "./views/chat.js";
+export function router() {
 
-import {renderAbout} from "./views/about.js";
+  const app = document.getElementById("app");
+  const path = window.location.pathname;
 
-import {renderNotFound} from "./views/notFound.js";
+  if (!app) return;
 
-export function router(){
+  if (path === "/home" || path === "/") {
+    app.innerHTML = renderHome();
+  }
 
-const app = document.getElementById("app");
+  else if (path === "/chat") {
+    app.innerHTML = renderChat();
 
-const hash = window.location.hash
-|| "#/home";
+    setTimeout(() => {
+      initChat();
+    }, 0);
+  }
 
-if(hash === "#/home"){
+  else if (path === "/about") {
+    app.innerHTML = renderAbout();
+  }
 
-app.innerHTML = renderHome();
-
-}
-
-else if(hash === "#/chat"){
-
-app.innerHTML = renderChat();
-
-initChat();
-
-}
-
-else if(hash === "#/about"){
-
-app.innerHTML = renderAbout();
-
-}
-
-else{
-
-app.innerHTML = renderNotFound();
-
-}
-
-updateActiveLinks();
-
-}
-
-function updateActiveLinks(){
-
-const links = document.querySelectorAll(".nav-link");
-
-links.forEach(link => { link.classList.remove(
-"active-link"
-);
-
-if(
-link.getAttribute("href") 
-=== window.location.hash
-){
-
-link.classList.add(
-"active-link"
-);
-
-}
-
-});
-
+  else {
+    app.innerHTML = renderNotFound();
+  }
 }
