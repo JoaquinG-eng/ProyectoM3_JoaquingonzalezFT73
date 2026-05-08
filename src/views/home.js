@@ -1,63 +1,40 @@
+// src/views/home.js
 export function renderHome() {
+  return `
+    <section class="home-page">
 
-return `
+      <div class="hero-card">
+        <h1 class="hero-title">ChatVerse AI</h1>
+        <p class="hero-text">
+          Conversa con personajes legendarios usando inteligencia artificial.
+        </p>
+        <a href="/chat" data-link class="start-btn">Comenzar Chat</a>
+      </div>
 
-<section class="home-page">
+      <div class="home-characters">
 
-<div class="hero-card">
+        <div class="home-character">
+          <h3>🍑 Princesa Peach</h3>
+          <p>La princesa del Reino Champiñón.</p>
+        </div>
 
-<h1 class="hero-title">
-ChatVerse AI
-</h1>
+        <div class="home-character">
+          <h3>🍥 Naruto</h3>
+          <p>El ninja prodigio de la aldea de la hoja.</p>
+        </div>
 
-<p class="hero-text">
+        <div class="home-character">
+          <h3>🌌 Rosalina</h3>
+          <p>La guardiana estelar del universo Mario.</p>
+        </div>
 
-Conversa con personajes
-legendarios usando
-inteligencia artificial.
+        <div class="home-character">
+          <h3>🍄 Mario Bros</h3>
+          <p>El héroe clásico del Reino Champiñón.</p>
+        </div>
 
-</p>
+      </div>
 
-<a
-href="/chat"
-class="start-btn"
->
-
-Comenzar Chat
-
-</a>
-
-</div>
-
-<div class="home-characters">
-
-<div class="home-character">
-
-<h3>🍑 Princesa Peach</h3>
-
-<p> La princesa del Reino Champiñón.</p>
-</div>
-
-
-<div class="home-character">
-
-<h3>🍥 Naruto</h3>
-
-<p> El ninja prodijio de la aldea de la hoja.</p>
-</div>
-
-<div class="home-character">
-<h3>🌌 Rosalina</h3>
-
-<p>La guardiana estelar del universo Mario.</p>
-</div>
-
-<div class="home-character">
-
-<h3>🍄 Mario Bros</h3>
-
-<p> El héroe clásico del Reino Champiñón.</p>
-
-</div>
-`;
+    </section>
+  `;
 }

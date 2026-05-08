@@ -1,3 +1,4 @@
+// Estado global — setCharacter vive SOLO aquí, no duplicar en otros archivos
 export const chatState = {
   selectedCharacter: null,
   messages: []
