@@ -1,87 +1,39 @@
-import {getCurrentCharacter}from "./character.js";
+import { getCurrentCharacter } from "../services/characterService.js";
+import { saveConversations }   from "./storage.js";
 
-import {saveConversations}from "./storage.js";
+export function addMessage(text, sender, currentCharacterName, conversations, save = true) {
+  const container = document.getElementById("messages");
+  if (!container) return;
 
-export function addMessage(
-text,
-sender,
-currentCharacter,
-conversations,
-save = true
-){
+  const character = getCurrentCharacter(currentCharacterName);
 
-const container =
-document.getElementById("messages");
+  const div = document.createElement("div");
+  div.className = `message ${sender}`;
+  div.innerHTML = `
+    <span class="avatar">${sender === "ai" ? (character?.avatar ?? "🤖") : "🧑"}</span>
+    <span class="message-text">${text}</span>
+  `;
 
-const character =
-getCurrentCharacter(currentCharacter);
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
 
-const div =
-document.createElement("div");
-
-div.className =
-`message ${sender}`;
-
-div.innerHTML = `
-<span class="avatar">
-${
-sender === "ai"
-? character.avatar
-: "🧑"
-}
-</span>
-
-<span class="message-text">
-${text}
-</span>
-`;
-
-container.appendChild(div);
-
-container.scrollTop =
-container.scrollHeight;
-
-if(save){
-
-if(!conversations[currentCharacter]){
-
-conversations[currentCharacter] = [];
-
+  if (save) {
+    if (!conversations[currentCharacterName]) {
+      conversations[currentCharacterName] = [];
+    }
+    conversations[currentCharacterName].push({ text, sender });
+    saveConversations(conversations);
+  }
 }
 
-conversations[currentCharacter].push({
-text,
-sender
-});
+export function loadConversation(currentCharacterName, conversations) {
+  const container = document.getElementById("messages");
+  if (!container) return;
 
-saveConversations(conversations);
+  container.innerHTML = "";
 
-}
-
-}
-
-export function loadConversation(
-currentCharacter,
-conversations
-){
-
-const container =
-document.getElementById("messages");
-
-container.innerHTML = "";
-
-(
-conversations[currentCharacter] || []
-).forEach(msg => {
-
-addMessage(
-msg.text,
-msg.sender,
-currentCharacter,
-conversations,
-false
-);
-
-});
-
+  const msgs = conversations[currentCharacterName] || [];
+  msgs.forEach(msg => {
+    addMessage(msg.text, msg.sender, currentCharacterName, conversations, false);
+  });
 }

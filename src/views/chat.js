@@ -1,17 +1,17 @@
-// src/views/chat.js
-import { characters } from "../data/characters.js";
-import { chatState, setCharacter } from "../state/chatState.js";
-import { getAIResponse } from "../services/chatServices.js";
+import { characters }from "../data/characters.js";
+import { chatState, setCharacter }from "../state/chatState.js";
+import { getAIResponse }from "../services/chatServices.js";
+import { applyTheme }from "../services/characterService.js";
 import { getConversations, saveConversations } from "../utils/storage.js";
-import { initContrastButton } from "../utils/contrast.js";
-import { addMessage, loadConversation } from "../utils/messages.js";
-import { addTyping, removeTyping } from "../utils/typing.js";
-import { renderCharacters } from "../components/characterCards.js";
-import { renderChatForm } from "../components/chatForm.js";
-import { renderMessages } from "../components/messagesContainer.js";
+import { addMessage, loadConversation }from "../utils/messages.js";
+import { addTyping, removeTyping }from "../utils/typing.js";
+import { initContrastButton }from "../utils/contrast.js";
+import { renderCharacters }from "../components/characterCards.js";
+import { renderChatForm }from "../components/chatForm.js";
+import { renderMessages }from "../components/messagesContainer.js";
 
 export function renderChat() {
-  // Primero retornamos el HTML
+  
   const html = `
     <section class="chat-page">
       <h2 class="chat-title">Elige tu personaje</h2>
@@ -21,7 +21,7 @@ export function renderChat() {
     </section>
   `;
 
-  // Usamos setTimeout para que el DOM esté listo antes de attachear eventos
+  // Inicializar eventos DESPUÉS de que el DOM exista
   setTimeout(() => initChat(), 0);
 
   return html;
@@ -30,64 +30,58 @@ export function renderChat() {
 function initChat() {
   const conversations = getConversations();
 
-  // Activar botón de personaje
+  // ── Selección de personaje ──────────────────────────────────
   document.querySelectorAll(".character-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const name = btn.dataset.character;
       const character = characters.find(c => c.name === name);
       if (!character) return;
 
-      // Actualizar estado
-      setCharacter(character);
+setCharacter(character);
 
-      // UI: resaltar botón activo
-      document.querySelectorAll(".character-btn").forEach(b =>
-        b.classList.remove("active")
-      );
+      document.querySelectorAll(".character-btn")
+        .forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
-      // Aplicar tema
-      document.body.className = character.theme;
-
-      // Cargar conversación guardada
+      applyTheme(character.theme);
       loadConversation(name, conversations);
     });
   });
 
-  // Enviar mensaje
+  // ── Enviar mensaje 
   const form = document.getElementById("chat-form");
-  if (form) {
-    form.addEventListener("submit", async e => {
-      e.preventDefault();
+  if (!form) return;
 
-      const input = document.getElementById("chat-input");
-      const text = input.value.trim();
-      if (!text) return;
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
 
-      if (!chatState.selectedCharacter) {
-        alert("Primero elige un personaje.");
-        return;
-      }
+    const input = document.getElementById("chat-input");
+    const text = input.value.trim();
+    if (!text) return;
 
-      input.value = "";
-      const characterName = chatState.selectedCharacter.name;
+    if (!chatState.selectedCharacter) {
+      alert("Primero elige un personaje.");
+      return;
+    }
 
-      addMessage(text, "user", characterName, conversations);
-      addTyping();
+    const characterName = chatState.selectedCharacter.name;
+    input.value = "";
 
-      try {
-        const reply = await getAIResponse(text, chatState.selectedCharacter);
-        removeTyping();
-        addMessage(reply, "ai", characterName, conversations);
-      } catch (err) {
-        removeTyping();
-        addMessage("Error al conectar con la IA.", "ai", characterName, conversations, false);
-        console.error(err);
-      }
-    });
-  }
+    addMessage(text, "user", characterName, conversations);
+    addTyping();
 
-  // Limpiar chat
+    try {
+      const reply = await getAIResponse(text, chatState.selectedCharacter);
+      removeTyping();
+      addMessage(reply, "ai", characterName, conversations);
+    } catch (err) {
+      removeTyping();
+      addMessage("Error al conectar con la IA. Revisá la consola.", "ai", characterName, conversations, false);
+      console.error("Chat error:", err);
+    }
+  });
+
+  // ── Limpiar historial 
   const clearBtn = document.getElementById("clear-chat");
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
@@ -95,10 +89,11 @@ function initChat() {
       if (!name) return;
       conversations[name] = [];
       saveConversations(conversations);
-      document.getElementById("messages").innerHTML = "";
+      const container = document.getElementById("messages");
+      if (container) container.innerHTML = "";
     });
   }
 
-  // Contraste
+  // ── Alto contraste 
   initContrastButton();
 }

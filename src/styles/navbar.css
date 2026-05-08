@@ -1,50 +1,30 @@
-.navbar{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:20px;
-
-padding:20px;
-
-background:
-rgba(0,0,0,.3);
-
-backdrop-filter:blur(10px);
+.navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
 }
 
-.navbar a{
-font-weight:bold;
-
-transition:
-opacity .3s ease,
-transform .3s ease;
+.navbar a {
+  font-weight: bold;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.navbar a:hover{
-opacity:.8;
-
-transform:translateY(-2px);
-}
-.nav-link{
-padding:10px 16px;
-border-radius:12px;
-
-transition:
-background .3s ease,
-transform .3s ease;
+.nav-link {
+  padding: 10px 16px;
+  border-radius: 12px;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.nav-link:hover{
-transform:translateY(-2px);
-
-background:
-rgba(255,255,255,.08);
+.nav-link:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.active-link{
-background:
-rgba(255,255,255,.14);
-
-box-shadow:
-0 0 12px rgba(255,255,255,.12);
+.active-link {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.12);
 }

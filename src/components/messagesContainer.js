@@ -1,5 +1,3 @@
-export function renderMessages() { 
-  return `
-  <div id="messages" class="messages"></div> 
-  `;
+export function renderMessages() {
+  return `<div id="messages" class="messages"></div>`;
 }

@@ -1,9 +1,2 @@
-import {characters}from "../data/characters.js";
-
-export function getCurrentCharacter(name){
-
-return characters.find(
-char => char.name === name
-);
-
-}
+// Re-exporta para compatibilidad — la lógica real vive en services/characterService.js
+export { getCurrentCharacter } from "../services/characterService.js";
