@@ -20,7 +20,7 @@ Una Single Page Application (SPA) que permite conversar con personajes de videoj
 
 ## Demo
 
-> [link de Vercel](https://proyecto-m3-joaquin-gonzalez-ft-73-oiidzgysi.vercel.app)
+> [link de Vercel](proyecto-m3-joaquin-gonzalez-ft-73.vercel.app)
 
 ---
 
@@ -102,8 +102,8 @@ Sin frameworks de UI. Sin librerías de terceros en el frontend. Todo vanilla.
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
+git clone https://github.com/JoaquinG-eng/ProyectoM3_JoaquingonzalezFT73
+cd ProyectoM3_JoaquingonzalezFT73
 ```
 
 ### 2. Instalar dependencias
