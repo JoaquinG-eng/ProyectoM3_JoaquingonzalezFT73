@@ -44,7 +44,8 @@ Sin frameworks de UI. Sin librerías de terceros en el frontend. Todo vanilla.
 ├── index.html
 ├── package.json
 ├── vercel.json
-├── .env.local               ← API key local (no se sube a git)
+├── .env.example
+├── .env       
 ├── .gitignore
 │
 ├── api/
