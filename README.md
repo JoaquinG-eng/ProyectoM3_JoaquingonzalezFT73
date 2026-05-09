@@ -307,20 +307,18 @@ npm run coverage  # genera el reporte de cobertura
 Archivos testeados
 ArchivoTestsstate/chatState.js4services/chatServices.js3utils/storage.js4utils/messages.js8Total19 tests
 Reporte de cobertura
-------------------|---------|----------|---------|---------|
-File              | % Stmts | % Branch | % Funcs | % Lines |
-------------------|---------|----------|---------|---------|
-All files         |  100.00 |    86.66 |  100.00 |  100.00 |
- services         |  100.00 |    80.00 |  100.00 |  100.00 |
-  chatServices.js |  100.00 |    80.00 |  100.00 |  100.00 |
- state            |  100.00 |   100.00 |  100.00 |  100.00 |
-  chatState.js    |  100.00 |   100.00 |  100.00 |  100.00 |
- utils            |  100.00 |    84.21 |  100.00 |  100.00 |
-  messages.js     |  100.00 |    80.00 |  100.00 |  100.00 |
-  storage.js      |  100.00 |   100.00 |  100.00 |  100.00 |
-------------------|---------|----------|---------|---------|
-100% de statements, funciones y líneas cubiertas. Las ramas no cubiertas (13.34%) corresponden a condiciones de red que no se pueden simular en tests unitarios, como respuestas HTTP inesperadas de la API de Gemini.git
-
+------------------|---------|----------|---------|---------|-------------------
+File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------|---------|----------|---------|---------|-------------------
+All files         |     100 |    81.81 |     100 |     100 |                   
+ services         |     100 |     62.5 |     100 |     100 |                   
+  chatServices.js |     100 |     62.5 |     100 |     100 | 35,61-65          
+ state            |     100 |      100 |     100 |     100 |                   
+  chatState.js    |     100 |      100 |     100 |     100 |                   
+ utils            |     100 |    84.21 |     100 |     100 |                   
+  messages.js     |     100 |       80 |     100 |     100 | 13,21,38          
+  storage.js      |     100 |      100 |     100 |     100 |                   
+------------------|---------|----------|---------|---------|-------------------
 ## Autor
 
 Joaquín González — Proyecto M3

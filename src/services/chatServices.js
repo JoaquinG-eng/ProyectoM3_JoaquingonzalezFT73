@@ -1,3 +1,5 @@
+import { getConversations } from "../utils/storage.js";
+
 const mockResponses = {
   Mario: [
     "¡Wahoo! ¡Mamma mia, qué mensaje tan genial!",
@@ -34,7 +36,21 @@ function getMockResponse(characterName) {
   return responses[Math.floor(Math.random() * responses.length)];
 }
 
-export async function getAIResponse(text, character, history = []) {
+// Estimación local de tokens (1 token ≈ 4 caracteres)
+function estimarTokens(texto) {
+  return Math.ceil(texto.length / 4);
+}
+
+export async function getAIResponse(text, character) {
+  const conversations = getConversations();
+  const history = conversations[character.name] || [];
+
+  const tokensEstimados = history.reduce((acc, msg) => {
+    return acc + estimarTokens(msg.text);
+  }, estimarTokens(text));
+
+  console.log(`Tokens estimados (local): ${tokensEstimados}`);
+
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
@@ -45,10 +61,16 @@ export async function getAIResponse(text, character, history = []) {
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
     const data = await response.json();
+
+    if (data.tokens) {
+      console.log(`Tokens reales (Gemini): ${data.tokens}`);
+    }
+
     return data.reply;
 
   } catch {
-    // Si falla la API (Live Server, sin conexión, etc.) usa respuesta mock
+    // Fallback local — responde con frases del personaje si la API no está disponible
+    console.log("API no disponible, usando respuesta local.");
     return getMockResponse(character.name);
   }
 }
