@@ -302,10 +302,10 @@ El archivo `vercel.json` ya tiene los rewrites necesarios para que las rutas de 
 ---
 Testing
 El proyecto cuenta con tests unitarios escritos con Vitest. Se testean las capas de lógica pura: servicios, estado y utilidades.
-bashnpm test          # corre los tests en modo watch
+bash npm test          # corre los tests en modo watch
 npm run coverage  # genera el reporte de cobertura
 Archivos testeados
-ArchivoTestsstate/chatState.js4services/chatServices.js3utils/storage.js4utils/messages.js8Total19 tests
+ArchivoTestsstate/chatState.js 4services/chatServices.js 3utils/storage.js 4utils/messages.js 8Tota l19 tests
 Reporte de cobertura
 ------------------|---------|----------|---------|---------|-------------------
 File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
