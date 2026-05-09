@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-// Mock del DOM
+
 document.body.innerHTML = `<div id="messages"></div>`;
 
-// Mock de dependencias
+
 vi.mock("../services/characterService.js", () => ({
   getCurrentCharacter: (name) => ({
     name,
@@ -14,13 +14,15 @@ vi.mock("../services/characterService.js", () => ({
 vi.mock("../utils/storage.js", () => ({
   getConversations: () => ({}),
   saveConversations: vi.fn(),
+  _clearCache: vi.fn(),
 }));
 
 const { addMessage, loadConversation } = await import("../utils/messages.js");
 
 describe("messages", () => {
   beforeEach(() => {
-    document.getElementById("messages").innerHTML = "";
+   
+    document.body.innerHTML = `<div id="messages"></div>`;
   });
 
   it("addMessage agrega un mensaje del user al DOM", () => {
@@ -68,5 +70,15 @@ describe("messages", () => {
     const conversations = { Mario: [] };
     loadConversation("Mario", conversations);
     expect(document.getElementById("messages").innerHTML).toBe("");
+  });
+
+  it("addMessage no falla si no existe el contenedor #messages", () => {
+    document.body.innerHTML = "";
+    expect(() => addMessage("hola", "user", "Mario", {})).not.toThrow();
+  });
+
+  it("loadConversation no falla si no existe el contenedor #messages", () => {
+    document.body.innerHTML = "";
+    expect(() => loadConversation("Mario", { Mario: [] })).not.toThrow();
   });
 });

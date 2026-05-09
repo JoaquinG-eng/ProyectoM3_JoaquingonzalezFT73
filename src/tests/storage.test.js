@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import { getConversations, saveConversations, _clearCache } from "../utils/storage.js";
 
 // Mock localStorage
 const localStorageMock = (() => {
@@ -12,12 +13,10 @@ const localStorageMock = (() => {
 
 Object.defineProperty(global, "localStorage", { value: localStorageMock });
 
-// Importar después del mock
-const { getConversations, saveConversations } = await import("../utils/storage.js");
-
 describe("storage", () => {
   beforeEach(() => {
     localStorage.clear();
+    _clearCache(); // limpia el _cache entre tests
   });
 
   it("retorna objeto vacío si no hay nada en localStorage", () => {
@@ -32,10 +31,16 @@ describe("storage", () => {
     expect(result).toEqual(data);
   });
 
-  it("saveConversations persiste en localStorage", () => {
+  it("saveConversaciones persiste en localStorage", () => {
     const data = { Naruto: [{ text: "dattebayo", sender: "ai" }] };
     saveConversations(data);
     const raw = JSON.parse(localStorage.getItem("conversations"));
     expect(raw).toEqual(data);
+  });
+
+  it("retorna {} si localStorage tiene JSON corrupto", () => {
+    vi.spyOn(localStorage, "getItem").mockReturnValueOnce("esto no es json{{");
+    const result = getConversations();
+    expect(result).toEqual({});
   });
 });

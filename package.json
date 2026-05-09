@@ -14,9 +14,10 @@
     "@google/generative-ai": "^0.24.1"
   },
   "devDependencies": {
-    "vite": "^5.0.0",
-    "vitest": "latest",
+    "@vitest/coverage-v8": "^4.1.5",
     "@vitest/ui": "latest",
-    "jsdom": "latest"
+    "jsdom": "latest",
+    "vite": "^5.0.0",
+    "vitest": "latest"
   }
 }

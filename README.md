@@ -300,6 +300,26 @@ saveConversations() → localStorage
 El archivo `vercel.json` ya tiene los rewrites necesarios para que las rutas de la SPA funcionen al recargar la página.
 
 ---
+Testing
+El proyecto cuenta con tests unitarios escritos con Vitest. Se testean las capas de lógica pura: servicios, estado y utilidades.
+bashnpm test          # corre los tests en modo watch
+npm run coverage  # genera el reporte de cobertura
+Archivos testeados
+ArchivoTestsstate/chatState.js4services/chatServices.js3utils/storage.js4utils/messages.js8Total19 tests
+Reporte de cobertura
+------------------|---------|----------|---------|---------|
+File              | % Stmts | % Branch | % Funcs | % Lines |
+------------------|---------|----------|---------|---------|
+All files         |  100.00 |    86.66 |  100.00 |  100.00 |
+ services         |  100.00 |    80.00 |  100.00 |  100.00 |
+  chatServices.js |  100.00 |    80.00 |  100.00 |  100.00 |
+ state            |  100.00 |   100.00 |  100.00 |  100.00 |
+  chatState.js    |  100.00 |   100.00 |  100.00 |  100.00 |
+ utils            |  100.00 |    84.21 |  100.00 |  100.00 |
+  messages.js     |  100.00 |    80.00 |  100.00 |  100.00 |
+  storage.js      |  100.00 |   100.00 |  100.00 |  100.00 |
+------------------|---------|----------|---------|---------|
+100% de statements, funciones y líneas cubiertas. Las ramas no cubiertas (13.34%) corresponden a condiciones de red que no se pueden simular en tests unitarios, como respuestas HTTP inesperadas de la API de Gemini.git
 
 ## Autor
 

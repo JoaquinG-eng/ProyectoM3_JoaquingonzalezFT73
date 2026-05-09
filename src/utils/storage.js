@@ -14,3 +14,8 @@ export function saveConversations(data) {
   _cache = data;
   localStorage.setItem("conversations", JSON.stringify(data));
 }
+
+
+export function _clearCache() {
+  _cache = null;
+}
