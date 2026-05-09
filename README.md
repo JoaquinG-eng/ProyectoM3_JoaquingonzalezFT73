@@ -31,7 +31,7 @@ Una Single Page Application (SPA) que permite conversar con personajes de videoj
 | HTML + CSS + JavaScript vanilla | Base de la aplicación |
 | Vite | Bundler y dev server |
 | Vercel | Hosting y Serverless Functions |
-| Gemini 2.0 Flash API | Inteligencia artificial para los personajes |
+| Gemini 2.5 Flash API | Inteligencia artificial para los personajes |
 
 Sin frameworks de UI. Sin librerías de terceros en el frontend. Todo vanilla.
 
