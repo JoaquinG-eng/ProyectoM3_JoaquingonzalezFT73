@@ -1,17 +1,16 @@
-import { characters }from "../data/characters.js";
-import { chatState, setCharacter }from "../state/chatState.js";
-import { getAIResponse }from "../services/chatServices.js";
-import { applyTheme }from "../services/characterService.js";
-import { getConversations, saveConversations } from "../utils/storage.js";
-import { addMessage, loadConversation }from "../utils/messages.js";
-import { addTyping, removeTyping }from "../utils/typing.js";
-import { initContrastButton }from "../utils/contrast.js";
-import { renderCharacters }from "../components/characterCards.js";
-import { renderChatForm }from "../components/chatForm.js";
-import { renderMessages }from "../components/messagesContainer.js";
+import { characters }                            from "../data/characters.js";
+import { chatState, setCharacter, restoreCharacter } from "../state/chatState.js";
+import { getAIResponse }                         from "../services/chatServices.js";
+import { applyTheme }                            from "../services/characterService.js";
+import { getConversations, saveConversations }   from "../utils/storage.js";
+import { addMessage, loadConversation }          from "../utils/messages.js";
+import { addTyping, removeTyping }               from "../utils/typing.js";
+import { initContrastButton }                    from "../utils/contrast.js";
+import { renderCharacters }                      from "../components/characterCards.js";
+import { renderChatForm }                        from "../components/chatForm.js";
+import { renderMessages }                        from "../components/messagesContainer.js";
 
 export function renderChat() {
-  
   const html = `
     <section class="chat-page">
       <h2 class="chat-title">Elige tu personaje</h2>
@@ -21,23 +20,31 @@ export function renderChat() {
     </section>
   `;
 
-  // Inicializar eventos DESPUÉS de que el DOM exista
   setTimeout(() => initChat(), 0);
-
   return html;
 }
 
 function initChat() {
   const conversations = getConversations();
 
-  // ── Selección de personaje ──────────────────────────────────
+  // ── Restaurar personaje si venía de otra página ──────────────
+  const restored = restoreCharacter(characters);
+  if (restored) {
+    applyTheme(restored.theme);
+    loadConversation(restored.name, conversations);
+    document.querySelectorAll(".character-btn").forEach(b => {
+      if (b.dataset.character === restored.name) b.classList.add("active");
+    });
+  }
+
+  // ── Selección de personaje ────────────────────────────────────
   document.querySelectorAll(".character-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const name = btn.dataset.character;
       const character = characters.find(c => c.name === name);
       if (!character) return;
 
-setCharacter(character);
+      setCharacter(character);
 
       document.querySelectorAll(".character-btn")
         .forEach(b => b.classList.remove("active"));
@@ -48,7 +55,7 @@ setCharacter(character);
     });
   });
 
-  // ── Enviar mensaje 
+  // ── Enviar mensaje ────────────────────────────────────────────
   const form = document.getElementById("chat-form");
   if (!form) return;
 
@@ -71,7 +78,8 @@ setCharacter(character);
     addTyping();
 
     try {
-      const reply = await getAIResponse(text, chatState.selectedCharacter);
+      const history = conversations[characterName] || [];
+      const reply = await getAIResponse(text, chatState.selectedCharacter, history);
       removeTyping();
       addMessage(reply, "ai", characterName, conversations);
     } catch (err) {
@@ -81,7 +89,7 @@ setCharacter(character);
     }
   });
 
-  // ── Limpiar historial 
+  // ── Limpiar historial ─────────────────────────────────────────
   const clearBtn = document.getElementById("clear-chat");
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
@@ -94,6 +102,6 @@ setCharacter(character);
     });
   }
 
-  // ── Alto contraste 
+  // ── Alto contraste ────────────────────────────────────────────
   initContrastButton();
 }

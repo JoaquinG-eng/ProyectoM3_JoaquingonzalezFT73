@@ -1,5 +1,5 @@
 import { getCurrentCharacter } from "../services/characterService.js";
-import { saveConversations }   from "./storage.js";
+import { getConversations, saveConversations } from "./storage.js";
 
 export function addMessage(text, sender, currentCharacterName, conversations, save = true) {
   const container = document.getElementById("messages");
@@ -31,6 +31,9 @@ export function loadConversation(currentCharacterName, conversations) {
   if (!container) return;
 
   container.innerHTML = "";
+
+  const fresh = getConversations();
+  Object.assign(conversations, fresh);
 
   const msgs = conversations[currentCharacterName] || [];
   msgs.forEach(msg => {

@@ -1,12 +1,16 @@
-// Estado global — setCharacter vive SOLO aquí, no duplicar en otros archivos
 export const chatState = {
   selectedCharacter: null,
-  messages: []
 };
-
-
 
 export function setCharacter(character) {
   chatState.selectedCharacter = character;
-  chatState.messages = [];
+  sessionStorage.setItem("selectedCharacter", character.name);
+}
+
+export function restoreCharacter(characters) {
+  const name = sessionStorage.getItem("selectedCharacter");
+  if (!name) return null;
+  const character = characters.find(c => c.name === name);
+  if (character) chatState.selectedCharacter = character;
+  return character || null;
 }

@@ -1,6 +1,7 @@
-// Función PURA: solo retorna string HTML, NO accede al DOM al importar
+// src/components/characterCards.js
 import { characters } from "../data/characters.js";
 
+// Retorna HTML string — NO accede al DOM
 export function renderCharacters() {
   return `
     <div class="characters">
