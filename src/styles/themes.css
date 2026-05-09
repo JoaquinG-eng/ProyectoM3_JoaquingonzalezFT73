@@ -1,31 +1,81 @@
-.theme-mario {
-  background: linear-gradient(135deg, #1e3a8a, #111827);
-}
-.theme-mario .messages {
-  border-left: 4px solid #60a5fa;
-  box-shadow: 0 0 10px rgba(96, 165, 250, 0.12);
-}
-
-.theme-naruto {
-  background: linear-gradient(135deg, #1f2937, #ea580c);
-}
-.theme-naruto .messages {
-  border-left: 4px solid #f97316;
-  box-shadow: 0 0 10px rgba(249, 115, 22, 0.12);
-}
-
-.theme-peach {
-  background: linear-gradient(135deg, #1f2937, #ec4899);
-}
-.theme-peach .messages {
-  border-left: 4px solid #f472b6;
-  box-shadow: 0 0 10px rgba(244, 114, 182, 0.12);
+/* ── MARIO ────────────────────────────────────────────────── */
+.theme-mario::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/mario.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+  image-rendering: high-quality;
+  animation: charPulse 3s ease-in-out infinite;
 }
 
-.theme-rosalina {
-  background: linear-gradient(135deg, #111827, #0ea5e9);
+/* ── NARUTO ───────────────────────────────────────────────── */
+.theme-naruto::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/kurama.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+  image-rendering: high-quality;
+  animation: charPulse 3s ease-in-out infinite;
 }
-.theme-rosalina .messages {
-  border-left: 4px solid #38bdf8;
-  box-shadow: 0 0 10px rgba(56, 189, 248, 0.12);
+
+/* ── ROSALINA ─────────────────────────────────────────────── */
+.theme-rosalina::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/rosalina.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+  image-rendering: high-quality;
+  animation: charPulse 3s ease-in-out infinite;
+}
+
+/* ── PEACH ────────────────────────────────────────────────── */
+.theme-peach::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/peach.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+  image-rendering: high-quality;
+  animation: charPulse 3s ease-in-out infinite;
+}
+
+/* ── ANIMACIÓN COMPARTIDA ─────────────────────────────────── */
+@keyframes charPulse {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  50%       { opacity: 0.55; transform: scale(1.02); }
 }

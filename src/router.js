@@ -15,21 +15,29 @@ export function router() {
   const root = document.getElementById("app");
   const path = window.location.pathname;
 
+  
+  if (!routes[path]) {
+    window.history.replaceState({}, "", "/home");
+    router();
+    return;
+  }
+
+  if (path !== "/chat") {
+    document.body.className = "";
+  }
+
   const renderView = routes[path] || renderNotFound;
 
-  // Vistas devuelven strings HTML → usamos innerHTML, NO appendChild
-  root.innerHTML = Navbar() + renderView();
+root.innerHTML = Navbar() + renderView();
 
-  // Interceptar links con data-link para navegar sin recarga
-  document.querySelectorAll("[data-link]").forEach(link => {
+document.querySelectorAll("[data-link]").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
       window.history.pushState({}, "", link.getAttribute("href"));
       router();
     });
 
-    // Resaltar link activo
-    if (link.getAttribute("href") === path) {
+if (link.getAttribute("href") === path) {
       link.classList.add("active-link");
     }
   });

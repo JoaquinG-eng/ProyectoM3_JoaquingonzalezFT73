@@ -3,6 +3,8 @@
   max-width: 900px;
   margin: 20px auto;
   padding: 10px 20px 20px;
+  position: relative;
+  z-index: 2;
 }
 
 .chat-title {
@@ -50,8 +52,11 @@
   padding: 20px;
   overflow-y: auto;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 2;
 }
 
 .message {
@@ -66,13 +71,13 @@
 
 .message.user {
   align-self: flex-end;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.18);  
 }
 
 .message.ai {
   align-self: flex-start;
-  background: rgba(0, 0, 0, 0.14);
-  border-left: 3px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.35);
+  border-left: 3px solid rgba(255, 255, 255, 0.3);
 }
 
 .avatar {
