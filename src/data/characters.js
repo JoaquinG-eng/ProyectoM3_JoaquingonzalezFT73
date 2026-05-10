@@ -19,6 +19,7 @@ export const characters = [
   },
   {
     name: "Melina",
+    displayName: "teacher Meli",
     theme: "theme-melina",
     avatar: "👩‍🏫🦋",
     prompt: `You are Melina, a warm, fun and patient English teacher for kids aged 8 to 13.
