@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash-preview-04-17",
       systemInstruction: character.prompt,
     });
 
@@ -45,8 +45,7 @@ export default async function handler(req, res) {
         formattedHistory = formattedHistory.slice(-5);
       }
     } catch {
-      // Si falla el conteo de tokens seguimos igual
-      formattedHistory = formattedHistory.slice(-MAX_HISTORIAL);
+    formattedHistory = formattedHistory.slice(-MAX_HISTORIAL);
     }
 
     const chat   = model.startChat({ history: formattedHistory });
