@@ -6,17 +6,7 @@
   .hero-title     { font-size: 3rem; }
   .hero-text      { font-size: 1rem; }
   .about-title    { font-size: 2.5rem; }
-  .about-card     { padding: 35px 25px; }
-
-  /* Imágenes de fondo en tablet */
-  .theme-mario::after,
-  .theme-naruto::after,
-  .theme-rosalina::after,
-  .theme-melina::after {
-    background-size: cover;
-    background-position: center center;
-  }
-}
+  .about-card     { padding: 35px 25px; }}
 
 /* ── Mobile ── */
 @media (max-width: 480px) {
@@ -33,22 +23,7 @@
   .hero-text        { font-size: 0.95rem; line-height: 1.6; }
   .about-title      { font-size: 2rem; }
   .about-text       { font-size: 0.95rem; }
-  .about-card       { padding: 30px 20px; }
-
-  /* Imágenes de fondo en móvil — zoom out para ver más */
-  .theme-mario::after,
-  .theme-rosalina::after,
-  .theme-melina::after {
-    background-size: contain;
-    background-position: center center;
-  }
-
-  /* Naruto — alejar más para ver el zorro completo */
-  .theme-naruto::after {
-    background-size: 85%;
-    background-position: center center;
-  }
-}
+  .about-card       { padding: 30px 20px; }}
 
 /* ── Small Mobile (iPhone SE) ── */
 @media (max-width: 375px) {
@@ -58,16 +33,4 @@
   .messages         { height: 50vh; }
   .chat-input       { padding: 12px; }
   .chat-form button { padding: 12px; }
-
-  /* Más zoom out en pantallas pequeñas */
-  .theme-mario::after,
-  .theme-rosalina::after,
-  .theme-melina::after {
-    background-size: contain;
-  }
-
-  .theme-naruto::after {
-    background-size: 75%;
-    background-position: center center;
-  }
 }
