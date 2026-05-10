@@ -1,5 +1,3 @@
-import { getConversations } from "../utils/storage.js";
-
 const mockResponses = {
   Mario: [
     "¡Wahoo! ¡Mamma mia, qué mensaje tan genial!",
@@ -9,7 +7,7 @@ const mockResponses = {
     "¡Wahoo! ¡Sigamos adelante!",
   ],
   Naruto: [
-    "¡Dattebayo! ¡Nunca me rindo, eso es mi camino ninja!",
+    "¡Nunca me rindo, eso es mi camino ninja!",
     "¡Cree en mí! ¡Yo creo en ti!",
     "¡Voy a ser Hokage, ya verás! ¡Dattebayo!",
     "¡Eso es exactamente lo que haría un verdadero ninja!",
@@ -22,35 +20,30 @@ const mockResponses = {
     "La luz de las estrellas siempre encuentra su camino.",
     "El universo tiene sus propios planes para todos nosotros.",
   ],
-  Peach: [
-    "¡Oh, qué amable de tu parte! Gracias desde el Reino Champiñón.",
-    "¡Eso es maravilloso! Estoy muy contenta de escucharlo.",
-    "En el Reino Champiñón siempre hay lugar para la bondad.",
-    "¡Oh my! ¡Qué cosa tan dulce has dicho!",
-    "Siempre es un placer conversar contigo, de verdad.",
+  Melina: [
+    "Ooh, look at this! You can do it like this... let me show you! 📚",
+    "Okay so, here's the thing — it's actually easier than it looks! Check this out... ✨",
+    "Yep! That's it, you can do it like this! Super simple once you get it 😊",
+    "Weeell done!! Congratulations!! I knew you could do it!! 🎉🌟",
+    "Amazing!! Congratulations, seriously!! You're on fire today!! 🔥✨",
+    "Did you understand? Take your time, no rush at all 😊",
+    "Did that make sense? If not, let's go through it again together! 🦋",
+    "No worries at all! Let me explain it a different way... 📖",
+    "That's okay! Learning takes time and you're doing great! Let's try again 💪",
+    "Hmm, let me think of a better example for you... okay so imagine... 🌟",
   ],
 };
 
-function getMockResponse(characterName) {
+function getMockResponse(characterName, history = []) {
+  if (characterName === "Melina" && history.length === 0) {
+    return "Hi! Good morning! 🌟 I'm Melina, your English teacher! What's your name? 😊";
+  }
+
   const responses = mockResponses[characterName] || ["..."];
   return responses[Math.floor(Math.random() * responses.length)];
 }
 
-// Estimación local de tokens (1 token ≈ 4 caracteres)
-function estimarTokens(texto) {
-  return Math.ceil(texto.length / 4);
-}
-
-export async function getAIResponse(text, character) {
-  const conversations = getConversations();
-  const history = conversations[character.name] || [];
-
-  const tokensEstimados = history.reduce((acc, msg) => {
-    return acc + estimarTokens(msg.text);
-  }, estimarTokens(text));
-
-  console.log(`Tokens estimados (local): ${tokensEstimados}`);
-
+export async function getAIResponse(text, character, history = []) {
   try {
     const response = await fetch("/api/chat", {
       method: "POST",
@@ -61,16 +54,9 @@ export async function getAIResponse(text, character) {
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
     const data = await response.json();
-
-    if (data.tokens) {
-      console.log(`Tokens reales (Gemini): ${data.tokens}`);
-    }
-
     return data.reply;
 
   } catch {
-    // Fallback local — responde con frases del personaje si la API no está disponible
-    console.log("API no disponible, usando respuesta local.");
-    return getMockResponse(character.name);
+    return getMockResponse(character.name, history);
   }
 }
