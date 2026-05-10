@@ -9,7 +9,7 @@ const mockResponses = {
   Naruto: [
     "¡Nunca me rindo, eso es mi camino ninja!",
     "¡Cree en mí! ¡Yo creo en ti!",
-    "¡Voy a ser Hokage, ya verás! ¡Dattebayo!",
+    "¡Voy a ser Hokage, ya verás!",
     "¡Eso es exactamente lo que haría un verdadero ninja!",
     "¡No me rendiré jamás, ese es mi juramento!",
   ],
@@ -34,7 +34,7 @@ const mockResponses = {
   ],
 };
 
-function getMockResponse(characterName, history = []) {
+function getMockResponse(characterName, history = []) { 
   if (characterName === "Melina" && history.length === 0) {
     return "Hi! Good morning! 🌟 I'm Melina, your English teacher! What's your name? 😊";
   }
