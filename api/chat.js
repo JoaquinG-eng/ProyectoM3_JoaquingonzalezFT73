@@ -2,7 +2,7 @@ const apiKey = process.env.GEMINI_API_KEY;
 const { GoogleGenerativeAI } = await import("@google/generative-ai");
 
 const MAX_HISTORIAL = 30;
-const MAX_TOKENS    = 5000; 
+const MAX_TOKENS    = 5000;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -22,11 +22,10 @@ export default async function handler(req, res) {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.0-flash",
       systemInstruction: character.prompt,
     });
 
-    // Recortamos el historial a los últimos MAX_HISTORIAL mensajes
     let formattedHistory = history
       .slice(-MAX_HISTORIAL)
       .map(msg => ({
@@ -34,27 +33,27 @@ export default async function handler(req, res) {
         parts: [{ text: msg.text }],
       }));
 
-    // Conteo real de tokens con Gemini
-    const tokenCount = await model.countTokens({
-      contents: [
-        ...formattedHistory,
-        { role: "user", parts: [{ text: message }] }
-      ]
-    });
+    try {
+      const tokenCount = await model.countTokens({
+        contents: [
+          ...formattedHistory,
+          { role: "user", parts: [{ text: message }] }
+        ]
+      });
 
-    // Si excede el límite recortamos más agresivamente
-    if (tokenCount.totalTokens > MAX_TOKENS) {
-      formattedHistory = formattedHistory.slice(-5);
+      if (tokenCount.totalTokens > MAX_TOKENS) {
+        formattedHistory = formattedHistory.slice(-5);
+      }
+    } catch {
+      // Si falla el conteo de tokens seguimos igual
+      formattedHistory = formattedHistory.slice(-MAX_HISTORIAL);
     }
 
     const chat   = model.startChat({ history: formattedHistory });
     const result = await chat.sendMessage(message);
     const reply  = result.response.text();
 
-    res.status(200).json({
-      reply,
-      tokens: tokenCount.totalTokens
-    });
+    res.status(200).json({ reply });
 
   } catch (err) {
     console.error("Error interno:", err);
