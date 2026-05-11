@@ -2,7 +2,7 @@ const apiKey = process.env.GEMINI_API_KEY;
 const { GoogleGenerativeAI } = await import("@google/generative-ai");
 
 const MAX_HISTORIAL = 30;
-const MAX_TOKENS    = 5000;
+const MAX_TOKENS = 5000;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash",
+      model: "gemini-2.5-flash",
       systemInstruction: character.prompt,
     });
 
@@ -33,29 +33,34 @@ export default async function handler(req, res) {
         parts: [{ text: msg.text }],
       }));
 
+    let currentTokens = 0;
+
     try {
-      const tokenCount = await model.countTokens({
+      const tokenResponse = await model.countTokens({
         contents: [
           ...formattedHistory,
           { role: "user", parts: [{ text: message }] }
         ]
       });
 
-      if (tokenCount.totalTokens > MAX_TOKENS) {
+      currentTokens = tokenResponse.totalTokens;
+
+      if (currentTokens > MAX_TOKENS) {
         formattedHistory = formattedHistory.slice(-5);
       }
-    } catch {
-      formattedHistory = formattedHistory.slice(-MAX_HISTORIAL);
+    } catch (tokenErr) {
+      console.warn("No se pudo contar los tokens, procediendo con historial reducido.");
+      formattedHistory = formattedHistory.slice(-10);
     }
 
-    const chat   = model.startChat({ history: formattedHistory });
+    const chat = model.startChat({ history: formattedHistory });
     const result = await chat.sendMessage(message);
-    const reply  = result.response.text();
+    const reply = result.response.text();
 
-    res.status(200).json({ reply });
+    res.status(200).json({ reply, tokens: currentTokens });
 
   } catch (err) {
-    console.error("Error interno:", err);
-    res.status(500).json({ error: "Error interno del servidor." });
+    console.error("Error interno en la API de Gemini:", err);
+    res.status(500).json({ error: "Error interno del servidor al procesar la IA." });
   }
 }

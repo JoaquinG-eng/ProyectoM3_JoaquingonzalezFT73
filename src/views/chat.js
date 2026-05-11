@@ -1,14 +1,14 @@
-import { characters }                            from "../data/characters.js";
-import { chatState, setCharacter, restoreCharacter } from "../state/chatState.js";
-import { getAIResponse }                         from "../services/chatServices.js";
-import { applyTheme }                            from "../services/characterService.js";
-import { getConversations, saveConversations }   from "../utils/storage.js";
-import { addMessage, loadConversation }          from "../utils/messages.js";
-import { addTyping, removeTyping }               from "../utils/typing.js";
-import { initContrastButton }                    from "../utils/contrast.js";
-import { renderCharacters }                      from "../components/characterCards.js";
-import { renderChatForm }                        from "../components/chatForm.js";
-import { renderMessages }                        from "../components/messagesContainer.js";
+import {characters}from "../data/characters.js";
+import {chatState, setCharacter, restoreCharacter} from "../state/chatState.js";
+import {getAIResponse}from "../services/chatServices.js";
+import {applyTheme}from "../services/characterService.js";
+import {getConversations, saveConversations }from "../utils/storage.js";
+import {addMessage, loadConversation }from "../utils/messages.js";
+import {addTyping, removeTyping}from "../utils/typing.js";
+import {initContrastButton}from "../utils/contrast.js";
+import {renderCharacters}from "../components/characterCards.js";
+import {renderChatForm}from "../components/chatForm.js";
+import {renderMessages}from "../components/messagesContainer.js";
 
 export function renderChat() {
   const html = `
@@ -24,6 +24,34 @@ export function renderChat() {
   return html;
 }
 
+function showWarning(message) {
+  const container = document.getElementById("messages");
+  if (!container) return;
+
+  const div = document.createElement("div");
+  div.className = "message ai";
+  div.innerHTML = `
+    <span class="avatar">⚠️</span>
+    <span class="message-text">${message}</span>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  setTimeout(() => div.remove(), 3000);
+}
+
+function showEmptyState() {
+  const container = document.getElementById("messages");
+  if (!container) return;
+
+  const div = document.createElement("div");
+  div.className = "message ai";
+  div.innerHTML = `
+    <span class="avatar">👾</span>
+    <span class="message-text">Elegí un personaje para comenzar a chatear 👆</span>
+  `;
+  container.appendChild(div);
+}
+
 function initChat() {
   const conversations = getConversations();
 
@@ -35,6 +63,9 @@ function initChat() {
     document.querySelectorAll(".character-btn").forEach(b => {
       if (b.dataset.character === restored.name) b.classList.add("active");
     });
+  } else {
+    // ── Estado vacío cuando no hay personaje seleccionado ────────
+    showEmptyState();
   }
 
   // ── Selección de personaje ────────────────────────────────────
@@ -64,21 +95,26 @@ function initChat() {
 
     const input = document.getElementById("chat-input");
     const text = input.value.trim();
-    if (!text) return;
 
     if (!chatState.selectedCharacter) {
-      alert("Primero elige un personaje.");
+      showWarning("Primero elegí un personaje 👆");
+      return;
+    }
+
+    if (!text) {
+      showWarning("Escribí un mensaje antes de enviar 📝");
       return;
     }
 
     const characterName = chatState.selectedCharacter.name;
     input.value = "";
 
+    const history = [...(conversations[characterName] || [])];
+
     addMessage(text, "user", characterName, conversations);
     addTyping();
 
     try {
-      const history = conversations[characterName] || [];
       const reply = await getAIResponse(text, chatState.selectedCharacter, history);
       removeTyping();
       addMessage(reply, "ai", characterName, conversations);
@@ -94,7 +130,10 @@ function initChat() {
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
       const name = chatState.selectedCharacter?.name;
-      if (!name) return;
+      if (!name) {
+        showWarning("Primero elegí un personaje 👆");
+        return;
+      }
       conversations[name] = [];
       saveConversations(conversations);
       const container = document.getElementById("messages");

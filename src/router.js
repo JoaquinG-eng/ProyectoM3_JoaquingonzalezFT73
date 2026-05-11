@@ -1,8 +1,8 @@
-import { renderHome }     from "./views/home.js";
-import { renderChat }     from "./views/chat.js";
-import { renderAbout }    from "./views/about.js";
-import { renderNotFound } from "./views/notFound.js";
-import { Navbar }         from "./components/navbar.js";
+import{renderHome}from "./views/home.js";
+import{renderChat}from "./views/chat.js";
+import{renderAbout}from "./views/about.js";
+import{renderNotFound}from "./views/notFound.js";
+import{Navbar}from "./components/navbar.js";
 
 const routes = {
   "/":      renderHome,
@@ -11,15 +11,21 @@ const routes = {
   "/about": renderAbout,
 };
 
+
+const validPaths = ["/", "/home", "/chat", "/about"];
+
 export function router() {
   const root = document.getElementById("app");
   const path = window.location.pathname;
 
-  
+
   if (!routes[path]) {
-    window.history.replaceState({}, "", "/home");
-    router();
-    return;
+    if (validPaths.includes(path)) {
+      window.history.replaceState({}, "", "/home");
+      router();
+      return;
+    }
+    
   }
 
   if (path !== "/chat") {
@@ -28,16 +34,16 @@ export function router() {
 
   const renderView = routes[path] || renderNotFound;
 
-root.innerHTML = Navbar() + renderView();
+  root.innerHTML = Navbar() + renderView();
 
-document.querySelectorAll("[data-link]").forEach(link => {
+  document.querySelectorAll("[data-link]").forEach(link => {
     link.addEventListener("click", e => {
       e.preventDefault();
       window.history.pushState({}, "", link.getAttribute("href"));
       router();
     });
 
-if (link.getAttribute("href") === path) {
+    if (link.getAttribute("href") === path) {
       link.classList.add("active-link");
     }
   });

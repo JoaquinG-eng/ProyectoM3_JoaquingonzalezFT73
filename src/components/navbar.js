@@ -1,4 +1,3 @@
-// Los links tienen data-link para que el router los intercepte
 export function Navbar() {
   return `
     <nav class="navbar">
