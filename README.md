@@ -1,6 +1,6 @@
 # ChatVerse AI 🎮
 
-Una Single Page Application (SPA) que permite conversar con personajes de videojuegos, anime y una maestra de inglés usando inteligencia artificial (Gemini 2.0 Flash de Google).
+Una Single Page Application (SPA) que permite conversar con personajes de videojuegos, anime y una maestra de inglés usando inteligencia artificial (Gemini 2.5 Flash de Google).
 
 ---
 
@@ -22,7 +22,7 @@ Una Single Page Application (SPA) que permite conversar con personajes de videoj
 
 ## Demo
 
-> [proyecto-m3-joaquin-gonzalez-ft-73.vercel.app](https://proyecto-m3-joaquin-gonzalez-ft-73.vercel.app)
+🔗 [proyecto-m3-joaquin-gonzalez-ft-73.vercel.app](https://proyecto-m3-joaquin-gonzalez-ft-73.vercel.app)
 
 ---
 
@@ -31,10 +31,10 @@ Una Single Page Application (SPA) que permite conversar con personajes de videoj
 | Tecnología | Uso |
 |---|---|
 | HTML + CSS + JavaScript | Base de la aplicación |
-| Vite | Bundler y dev server |
+| Vite | Bundler, dev server y soporte para Vitest |
 | Vercel | Hosting y Serverless Functions |
-| Gemini 2.0 Flash API | Inteligencia artificial para los personajes |
-| @google/generative-ai | SDK oficial de Google para Gemini |
+| Gemini 2.5 Flash API | Inteligencia artificial para los personajes |
+| @google/generative-ai | SDK oficial de Google — usado solo en el servidor |
 | Vitest | Testing unitario |
 
 Sin frameworks de UI. Sin librerías de terceros en el frontend. Todo vanilla.
@@ -123,10 +123,7 @@ cd ProyectoM3_JoaquingonzalezFT73
 ```bash
 npm install
 ```
-
-
-
-### 3. Crear el archivo de entorno
+ ### 3. Crear el archivo de entorno
 
 Copiar `.env.example` a `.env` y completar con la API key real:
 
@@ -134,7 +131,7 @@ Copiar `.env.example` a `.env` y completar con la API key real:
 cp .env.example .env
 ```
 
-```
+```env
 GEMINI_API_KEY=tu_api_key_real_aqui
 ```
 
@@ -202,13 +199,13 @@ Al abrir con Live Server, `/api/chat` no está disponible. En ese caso `chatServ
 ## Testing
 
 ```bash
-
+# Correr los tests
 npm test
 
- 
+# Interfaz visual
 npm run test:ui
 
-
+# Reporte de cobertura
 npm run coverage
 ```
 
@@ -224,19 +221,21 @@ npm run coverage
 ### Reporte de cobertura
 
 ```
-------------------|---------|----------|---------|---------|-------------------
-File              | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
-------------------|---------|----------|---------|---------|-------------------
-All files         |     100 |    88.57 |     100 |     100 |                   
- services         |     100 |       90 |     100 |     100 |                   
-  chatServices.js |     100 |       90 |     100 |     100 | 42                
- state            |     100 |      100 |     100 |     100 |                   
-  chatState.js    |     100 |      100 |     100 |     100 |                   
- utils            |     100 |    84.21 |     100 |     100 |                   
-  messages.js     |     100 |       80 |     100 |     100 | 13,21,38          
-  storage.js      |     100 |      100 |     100 |     100 |                   
-------------------|---------|----------|---------|---------|-------------------
+------------------|---------|----------|---------|---------|
+File              | % Stmts | % Branch | % Funcs | % Lines |
+------------------|---------|----------|---------|---------|
+All files         |  100.00 |    88.57 |  100.00 |  100.00 |
+ services         |  100.00 |    90.00 |  100.00 |  100.00 |
+  chatServices.js |  100.00 |    90.00 |  100.00 |  100.00 |
+ state            |  100.00 |   100.00 |  100.00 |  100.00 |
+  chatState.js    |  100.00 |   100.00 |  100.00 |  100.00 |
+ utils            |  100.00 |    84.21 |  100.00 |  100.00 |
+  messages.js     |  100.00 |    80.00 |  100.00 |  100.00 |
+  storage.js      |  100.00 |   100.00 |  100.00 |  100.00 |
+------------------|---------|----------|---------|---------|
 ```
+
+**100% de statements, funciones y líneas** cubiertas.
 
 ---
 
@@ -260,13 +259,22 @@ Todas las vistas (`renderHome`, `renderChat`, etc.) retornan strings HTML puros.
 
 **Consecuencia importante:** los eventos se registran con `setTimeout(() => initChat(), 0)` dentro de `renderChat()` para esperar a que el DOM exista antes de buscar los elementos.
 
-### La API key vive solo en el servidor
+### El SDK de Gemini vive solo en el servidor
 
-Se decidió no usar `@google/generative-ai` en el frontend porque expone la API key en el bundle de JavaScript que cualquier usuario puede ver. En cambio:
+Se usa `@google/generative-ai` únicamente en la Serverless Function del servidor (`api/chat.js`), nunca en el frontend. Si se importara directamente en el browser, la API key quedaría expuesta en el bundle de JavaScript visible para cualquier usuario. En cambio:
 
-- El frontend llama a `/api/chat` (Serverless Function de Vercel)
-- La Serverless Function tiene la API key como variable de entorno del servidor
+- El frontend llama a `/api/chat` con `fetch`
+- La Serverless Function importa el SDK y maneja la API key
 - La API key nunca llega al browser
+
+### Conteo y límite de tokens
+
+Para controlar el consumo de la API se implementaron dos capas:
+
+- **Local** — estimación aproximada (longitud del texto ÷ 4) sin llamar a Gemini
+- **Producción** — `countTokens()` real de Gemini antes de cada request
+
+Si el total supera los 5000 tokens, el historial se recorta agresivamente a los últimos 5 mensajes. El historial siempre se limita a los últimos 30 mensajes antes del conteo.
 
 ### Historial persistente con cache en memoria
 
@@ -330,8 +338,10 @@ Usuario envía mensaje
         ↓
 addMessage() → DOM + localStorage
 fetch("/api/chat") → Serverless Function
-        ↓                       ↓ falla
-Gemini API              respuesta mock por personaje
+        ↓                         ↓ falla
+countTokens() → recorte       respuesta mock por personaje
+        ↓
+Gemini 2.5 Flash responde
         ↓
 Respuesta → addMessage() → DOM + localStorage
 ```
@@ -345,7 +355,7 @@ Respuesta → addMessage() → DOM + localStorage
 | 🍄 Mario | Azul | Alegre, optimista, usa "¡Wahoo!" y "¡Mamma mia!" |
 | 🍥 Naruto | Naranja | Energético, nunca se rinde, quiere ser Hokage |
 | 🌌 Rosalina | Celeste | Calmada, sabia, habla del cosmos y las estrellas |
-| 👩‍🏫🦋 teacher Meli | Beige/English | Maestra de inglés amable y divertida para chicos de 8 a 13 años. Siempre responde en inglés, corrige errores con gentileza y pregunta el nombre del estudiante al inicio |
+| 👩‍🏫 Teacher Meli | Beige/English | Maestra de inglés amable y divertida para chicos de 8 a 13 años. Siempre responde en inglés, corrige errores con gentileza y pregunta el nombre del estudiante al inicio |
 
 ---
 
@@ -360,6 +370,23 @@ El archivo `vercel.json` ya tiene los rewrites necesarios para que las rutas de 
 
 ---
 
+## Registro de uso de IA
+
+El desarrollo fue asistido por **Claude (Anthropic)**. Su uso se concentró en debugging, validación de decisiones técnicas y generación de boilerplate. Las decisiones de arquitectura, diseño y funcionalidades fueron tomadas de forma independiente.
+
+Los errores más relevantes resueltos con asistencia de IA:
+
+- Router usando `appendChild` con strings HTML → migrado a `innerHTML`
+- SDK de Gemini importado en el frontend → movido a Serverless Function
+- `getElementById` ejecutándose al importar → convertido a función pura
+- `setCharacter` duplicado en dos archivos → centralizado en `chatState.js`
+- Rutas que rompían al recargar en Vercel → configurado `vercel.json` con rewrites
+- Cache de `localStorage` que interfería entre tests → implementado `_clearCache()`
+
+> El documento completo de uso de IA está en [`docs-ia.md`](./documentacion-con-IA.md)
+
+---
+
 ## Autor
 
-Joaquín González — Proyecto M3
+**Joaquín Gonzalez** — Proyecto M3 — FT73
