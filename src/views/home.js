@@ -1,4 +1,3 @@
-// src/views/home.js
 export function renderHome() {
   return `
     <section class="home-page">
@@ -14,8 +13,9 @@ export function renderHome() {
       <div class="home-characters">
 
         <div class="home-character">
-          <h3>🍑 Princesa Peach</h3>
-          <p>La princesa del Reino Champiñón.</p>
+          <h3>teacher Meli👩‍🏫🦋</h3>
+          <p>your sweet teacher.</p>
+          <p>tu dulce Maestra.</p>
         </div>
 
         <div class="home-character">
