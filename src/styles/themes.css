@@ -6,7 +6,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("/mario.png");
+  background-image: url("/IMG/mario.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -25,7 +25,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("/naruto.png");
+  background-image: url("/IMG/naruto.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -44,7 +44,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("/rosalina.png");
+  background-image: url("/IMG/rosalina.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -62,7 +62,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("/teacher_Meli.png");
+  background-image: url("/IMG/teacher_Meli.png");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

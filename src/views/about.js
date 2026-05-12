@@ -47,7 +47,7 @@ export function renderAbout() {
         </div>
 
         <div class="about-character">
-          >teacher Meli👩‍🏫🦋
+          teacher Meli👩‍🏫🦋
         </div>
 
         <div class="about-character">
