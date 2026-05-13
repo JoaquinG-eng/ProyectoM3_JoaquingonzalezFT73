@@ -1,3 +1,7 @@
+import { getConversations }  from "../utils/storage.js";
+import { addTokens, isLimitReached } from "../utils/tokenLimit.js";
+import { refreshTokenBar } from "../components/tokenBar.js";
+
 const mockResponses = {
   Mario: [
     "¡Wahoo! ¡Mamma mia, qué mensaje tan genial!",
@@ -34,29 +38,58 @@ const mockResponses = {
   ],
 };
 
-function getMockResponse(characterName, history = []) { 
+function getMockResponse(characterName, history = []) {
   if (characterName === "Melina" && history.length === 0) {
     return "Hi! Good morning! 🌟 I'm Melina, your English teacher! What's your name? 😊";
   }
-
   const responses = mockResponses[characterName] || ["..."];
   return responses[Math.floor(Math.random() * responses.length)];
 }
 
 export async function getAIResponse(text, character, history = []) {
+
+  if (isLimitReached()) {
+    throw new Error("TOKEN_LIMIT");
+  }
+
   try {
+    const conversations = getConversations();
+    const fullHistory   = conversations[character.name] || [];
+
     const response = await fetch("/api/chat", {
-      method: "POST",
+      method:  "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: text, character, history }),
+      body:    JSON.stringify({ message: text, character, history: fullHistory }),
     });
 
     if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
     const data = await response.json();
+
+    if (data.tokens) {
+      addTokens(data.tokens);
+      refreshTokenBar();
+    }
+
+    if (isLimitReached()) {
+      throw new Error("TOKEN_LIMIT");
+    }
+
     return data.reply;
 
-  } catch {
+  } catch (err) {
+
+    if (err.message === "TOKEN_LIMIT") throw err;
+
+
+    const estimatedTokens = Math.floor(text.length / 4) + 50;
+    addTokens(estimatedTokens);
+    refreshTokenBar();
+
+    if (isLimitReached()) {
+      throw new Error("TOKEN_LIMIT");
+    }
+
     return getMockResponse(character.name, history);
   }
 }

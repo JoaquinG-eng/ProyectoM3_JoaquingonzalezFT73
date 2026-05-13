@@ -147,3 +147,30 @@
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Token limit message ── */
+.token-limit-message {
+  border-left: 3px solid #f59e0b !important;
+  background: rgba(245, 158, 11, 0.08) !important;
+}
+
+.token-countdown {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  opacity: 0.75;
+  font-style: normal;
+  letter-spacing: 0.3px;
+}
+
+.chat-input:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+#chat-form button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
