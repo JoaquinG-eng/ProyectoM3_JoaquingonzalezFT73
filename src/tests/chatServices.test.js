@@ -1,6 +1,6 @@
-  import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
-  const mockCharacter = { name: "Mario", prompt: "Eres Mario." };
+const mockCharacter = { name: "Mario", prompt: "Eres Mario." };
 
 describe("chatServices", () => {
   beforeEach(() => {
@@ -12,7 +12,7 @@ describe("chatServices", () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ reply: "¡Wahoo!" }),
-  });
+    });
 
     const { getAIResponse } = await import("../services/chatServices.js");
     const reply = await getAIResponse("hola", mockCharacter, []);
@@ -20,21 +20,20 @@ describe("chatServices", () => {
   });
 
   it("usa respuesta mock si la API falla", async () => {
-  global.fetch = vi.fn().mockRejectedValue(new Error("sin conexión"));
+    global.fetch = vi.fn().mockRejectedValue(new Error("sin conexión"));
 
-  const { getAIResponse } = await import("../services/chatServices.js");
-  const reply = await getAIResponse("hola", mockCharacter, []);
+    const { getAIResponse } = await import("../services/chatServices.js");
+    const reply = await getAIResponse("hola", mockCharacter, []);
 
-  const frasesMario = [
-    "¡Wahoo! ¡Mamma mia, qué mensaje tan genial!",
-    "¡Vamos, vamos! ¡Tú puedes contar conmigo!",
-    "¡Itsa me, Mario! ¿En qué te puedo ayudar?",
-    "¡Mamma mia! ¡Eso es increíble!",
-    "¡Wahoo! ¡Sigamos adelante!",
-  ];
-  expect(frasesMario).toContain(reply);
-});
-
+    const frasesMario = [
+      "¡Wahoo! ¡Mamma mia, qué mensaje tan genial!",
+      "¡Vamos, vamos! ¡Tú puedes contar conmigo!",
+      "¡Itsa me, Mario! ¿En qué te puedo ayudar?",
+      "¡Mamma mia! ¡Eso es increíble!",
+      "¡Wahoo! ¡Sigamos adelante!",
+    ];
+    expect(frasesMario).toContain(reply);
+  });
 
   it("usa respuesta mock si la API retorna error HTTP", async () => {
     global.fetch = vi.fn().mockResolvedValue({
@@ -58,7 +57,7 @@ describe("chatServices", () => {
     const historial = [
       { text: "hola", sender: "user" },
       { text: "¡Wahoo!", sender: "ai" },
-  ];
+    ];
 
     const { getAIResponse } = await import("../services/chatServices.js");
     await getAIResponse("nuevo mensaje", mockCharacter, historial);
@@ -71,7 +70,7 @@ describe("chatServices", () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ reply: "ok" }),
-  });
+    });
 
     const { getAIResponse } = await import("../services/chatServices.js");
     await getAIResponse("primer mensaje", mockCharacter, []);
